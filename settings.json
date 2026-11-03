@@ -18,11 +18,25 @@
       {
         "matcher": "Bash",
         "hooks": [
-          { "type": "command", "command": "python3 \"$HOME/.claude/hooks/sem-assinatura.py\"" }
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/.claude/hooks/sem-assinatura.py\""
+          }
         ]
       }
     ]
   },
   "theme": "dark",
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "ponytail@ponytail": true
+  }
 }
