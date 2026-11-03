@@ -12,21 +12,31 @@ case "${OSTYPE-}" in
 esac
 
 ligar "$REPO/CLAUDE.global.md" "$C/CLAUDE.md"
+mkdir -p "$C/hooks"
+for h in "$REPO"/hooks/*; do
+  ligar "$h" "$C/hooks/$(basename "$h")"
+done
 for s in "$REPO"/skills/*/; do
   s="${s%/}"
   ligar "$s" "$C/skills/$(basename "$s")"
 done
 
-# Merge e não cópia: o Claude Code e o Orca também escrevem no settings.json.
+# Merge recursivo e não cópia: o Claude Code e o Orca também escrevem no settings.json.
+# Dicts se fundem chave a chave (permissions.allow local sobrevive); listas e valores do repo vencem.
 PY=$(command -v python3 || command -v python)
 "$PY" - "$REPO/settings.json" "$C/settings.json" <<'EOF'
 import json, os, sys
 novo = json.load(open(sys.argv[1], encoding="utf-8"))
 alvo = sys.argv[2]
 atual = json.load(open(alvo, encoding="utf-8")) if os.path.exists(alvo) else {}
-atual.update(novo)
+def fundir(a, b):
+    for k, v in b.items():
+        a[k] = fundir(a[k], v) if isinstance(v, dict) and isinstance(a.get(k), dict) else v
+    return a
+fundir(atual, novo)
 with open(alvo, "w", encoding="utf-8") as f:
     json.dump(atual, f, indent=2, ensure_ascii=False)
+    f.write("\n")
 EOF
 
 if command -v playwright-cli >/dev/null; then
