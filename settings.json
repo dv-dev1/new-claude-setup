@@ -8,6 +8,11 @@
     "pr": "",
     "sessionUrl": false
   },
+  "statusLine": {
+    "type": "command",
+    "command": "if command -v ccstatusline >/dev/null; then ccstatusline; else npx -y ccstatusline@2.2.32; fi",
+    "padding": 0
+  },
   "theme": "dark",
   "tui": "fullscreen"
 }
