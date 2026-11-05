@@ -24,6 +24,20 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"UserPromptSubmit\", \"additionalContext\": \"SUPERPOWERS: as unicas skills de ciclo de engenharia do usuario sao as superpowers:*. Antes de agir, decida se alguma se aplica (brainstorming, systematic-debugging, test-driven-development, writing-plans, verification-before-completion etc.) e invoque-a com a ferramenta Skill. Pergunta simples nao e excecao. Use em silencio: nao anuncie a skill nem escreva linha Superpowers: na resposta. Projeto novo ou decisao cara de desfazer: skill arquitetura antes de codar. Caveman/Ponytail nao autorizam pular.\"}}'"
+          },
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"PONYTAIL: ao escrever codigo, faca a menor mudanca que resolve a tarefa por completo. Reuse o que ja existe no codebase/stdlib/dependencias instaladas; sem abstracao, opcao ou codigo para depois que ninguem pediu. Nunca corte validacao, tratamento de erro, seguranca ou testes necessarios. Ponytail define o tamanho do codigo, nao o processo: nao autoriza pular skill do superpowers.\"}}'"
+          }
+        ]
+      }
     ]
   },
   "theme": "dark",
@@ -40,11 +54,18 @@
         "source": "github",
         "repo": "JuliusBrussee/caveman"
       }
+    },
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
     }
   },
   "enabledPlugins": {
     "ponytail@ponytail": true,
-    "caveman@caveman": true
+    "caveman@caveman": true,
+    "superpowers@superpowers-marketplace": true
   },
   "outputStyle": "Concise"
 }
