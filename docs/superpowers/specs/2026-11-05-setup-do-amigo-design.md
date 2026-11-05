@@ -9,7 +9,7 @@ Aplicar no `new-claude-setup` o que o colega recomendou, sem trazer de volta o e
 ## O que entra
 
 1. **Hook de varredura** (`Stop`, `hooks/varredura.py`). Dispara quando o turno rodou `superpowers:systematic-debugging` e editou arquivo (`Edit`, `Write`, `MultiEdit`, `NotebookEdit`). Bloqueia uma vez (respeita `stop_hook_active`) e manda o Claude varrer o repo inteiro a partir da raiz atrás de outras ocorrências do bug, com variações de busca, e informar a contagem final.
-2. **Instrução de compactação** (`PreCompact`, sem matcher: manual, auto e idle). Um hook imprime `hooks/compactar.txt`, um resumo em até 500 caracteres do prompt do colega. O Claude Code corta cada saída de `PreCompact` em 500 caracteres.
+2. **Instrução de compactação** (`PreCompact`, sem matcher: manual, auto e idle). Um hook imprime `hooks/compactar.txt`, o prompt do colega íntegro (999 caracteres). O Claude Code aceita até 10.000 caracteres por saída de `PreCompact`.
 3. **Janela de compactação**: `autoCompactWindow: 600000`. O Opus 5.5 tem 1M nativo. `idleCompaction` já vem ligado.
 4. **Orçamento da lista de skills**: `skillListingBudgetFraction: 0.03`. O padrão é `0.01`, 1% da janela.
 5. **Acervo**: `skillOverrides: "off"` para 5 skills do claude.ai sem uso (`morning`, `import-memory`, `google-workspace`, `built-in-browser`, `computer-use`). Os extras do caveman e do ponytail ficaram de fora: o Claude Code 2.1.318 ignora `skillOverrides` em skill de plugin de terceiros. Uma linha no `CLAUDE.global.md` aponta onde ler o `SKILL.md` delas sob demanda.
@@ -26,10 +26,9 @@ Aplicar no `new-claude-setup` o que o colega recomendou, sem trazer de volta o e
 ## Abordagens consideradas
 
 - Varredura: só em turno com debugging e edição (escolhida, sem ruído). Alternativas: toda edição, com uma rodada extra por turno; subagente revisor, mais isento, mas lento e caro.
-- Compactação: um hook com o texto resumido (escolhida). Alternativas: 3 hooks com o texto íntegro; seção no `CLAUDE.md`, que custa tokens todo turno.
+- Compactação: um hook com o texto íntegro. A escolha inicial foi um resumo de 500 caracteres, por um limite lido errado no binário; a revisão final achou o limite real (10.000) e o texto voltou íntegro. Alternativa descartada: seção no `CLAUDE.md`, que custa tokens todo turno.
 - Acervo: `skillOverrides` com índice no `CLAUDE.md`. Mover os arquivos não funciona, porque a atualização do plugin restaura a pasta.
 
 ## Limites conhecidos
 
 - Varredura não vê edição feita por `Bash` (`sed -i`, heredoc), nem debugging que começou num turno e editou em outro.
-- O texto de compactação perde parte do original para caber em 500 caracteres.

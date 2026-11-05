@@ -5,8 +5,9 @@ import json
 import sys
 
 EDICAO = {"Edit", "Write", "MultiEdit", "NotebookEdit"}
-# Chega como `user` mas não abre turno: eco de slash command, saída local, lembrete e aviso de tarefa.
-NAO_HUMANO = ("<command-name>", "<command-message>", "<local-command-", "<system-reminder>", "<task-notification>")
+# Chega como `user` mas não abre turno: saída de comando local, lembrete e aviso de tarefa.
+# Eco de slash command abre: é fala humana.
+NAO_HUMANO = ("<local-command-", "<system-reminder>", "<task-notification>")
 MOTIVO = (
     "Varredura: este turno corrigiu um bug. Antes de encerrar, procure outras ocorrências do mesmo padrão "
     "no repo inteiro, partindo da raiz (`git rev-parse --show-toplevel`; fora de git, suba até a raiz do "
@@ -17,9 +18,12 @@ MOTIVO = (
 
 
 def abre_turno(entrada):
+    conteudo = (entrada.get("message") or {}).get("content")
+    # O feedback desta varredura fecha a janela: o que veio antes já foi varrido.
+    if entrada.get("isMeta") and isinstance(conteudo, str) and MOTIVO[:40] in conteudo:
+        return True
     if entrada.get("type") != "user" or entrada.get("isMeta") or entrada.get("isSidechain"):
         return False
-    conteudo = (entrada.get("message") or {}).get("content")
     if isinstance(conteudo, list):
         conteudo = "\n".join(b.get("text") or "" for b in conteudo if isinstance(b, dict) and b.get("type") == "text")
     texto = (conteudo or "").strip() if isinstance(conteudo, str) else ""

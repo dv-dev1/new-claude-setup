@@ -94,10 +94,29 @@ def test_main_bloqueia_imprime_json():
     assert "raiz" in saida["reason"]
 
 
-def test_compactar_cabe_em_500():
+def test_compactar_cabe_no_limite_do_precompact():
     texto = open(os.path.join(RAIZ, "hooks", "compactar.txt"), encoding="utf-8").read().strip()
-    assert len(texto) <= 500, len(texto)
+    assert len(texto) <= 10000, len(texto)  # limite do Claude Code por saída de hook PreCompact
     for trecho in ("PENDING", "Context & Goal", "Open Questions"):
+        assert trecho in texto, trecho
+
+
+def test_varredura_anterior_fecha_a_janela():
+    feedback = {"type": "user", "isMeta": True, "message": {"content": "Stop hook feedback:\n" + varredura.MOTIVO}}
+    aviso = humano("<task-notification>\n<task-id>x</task-id>\n</task-notification>")
+    assert varredura.precisa_varrer([humano("bug"), debug(), edit(), feedback, ferramenta("Bash"), aviso]) is False
+
+
+def test_slash_command_abre_turno():
+    comando = humano("<command-message>caveman-review</command-message>\n<command-name>/caveman-review</command-name>")
+    assert varredura.precisa_varrer([humano("bug"), debug(), edit(), comando, edit()]) is False
+
+
+def test_compactar_e_o_prompt_integral_do_colega():
+    texto = open(os.path.join(RAIZ, "hooks", "compactar.txt"), encoding="utf-8").read()
+    for trecho in ("Preserve the following verbatim or near-verbatim:",
+                   'Multiple failed attempts into "we tried some approaches"',
+                   "Err on the side of keeping more rather than less. Length is not a concern."):
         assert trecho in texto, trecho
 
 

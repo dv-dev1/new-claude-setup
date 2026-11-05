@@ -1,1 +1,23 @@
-Preserve verbatim: full file paths; code, signatures and types written or debated; exact names (vars, env vars, DB columns, endpoints, tools); each error with its exact fix; decisions with the why (X over Y); work state (done, next, blocked); open questions marked PENDING. Never collapse trade-offs, failed attempts, or specific prompts/queries/configs. Sections: Context & Goal; Key Decisions; Code & Files; Errors & Resolutions; Current State; Open Questions / Next Steps. Keep more, not less.
+Preserve the following verbatim or near-verbatim:
+
+All file paths touched, created, or discussed (full paths).
+All code snippets, function signatures, and type definitions we wrote or debated.
+Architectural decisions AND the reasoning behind them (why we chose X over Y).
+Errors encountered and their exact resolutions — keep both the error and the fix.
+Open questions and unresolved decisions — mark clearly as PENDING.
+Exact names: variables, env vars, DB columns, API endpoints, tool names.
+Current state of work in progress (what's done, what's next, what's blocked).
+
+Do NOT collapse:
+Trade-off discussions into single sentences
+Multiple failed attempts into "we tried some approaches"
+Specific prompts, queries, or configurations into generic descriptions
+
+Structure the summary as:
+Context & Goal
+Key Decisions (with rationale)
+Code & Files Modified
+Errors & Resolutions
+Current State
+Open Questions / Next Steps
+Err on the side of keeping more rather than less. Length is not a concern.

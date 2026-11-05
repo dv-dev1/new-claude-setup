@@ -8,7 +8,7 @@ Setup do Claude Code recomeçado do zero em 02/11/2026: só o que é usado de fa
 | `settings.json` | igual ao `~/.claude/settings.json`: bypass, Opus 5.5 em xhigh, agent teams, plugins, lembretes `UserPromptSubmit`, output style padrão, compactação automática em 600k (`autoCompactWindow`), lista de skills com 3% da janela (`skillListingBudgetFraction`, padrão 1%), statusline, tema, sem assinatura do Claude |
 | acervo | `skillOverrides: "off"` em 5 skills do claude.ai sem uso; o `CLAUDE.global.md` diz onde ler o `SKILL.md` delas sob demanda. Skill de plugin de terceiros (caveman, ponytail) não aceita `skillOverrides` no Claude Code 2.1.318: só sai desligando o plugin inteiro |
 | `hooks/varredura.py` | `Stop`: turno que rodou systematic-debugging e editou arquivo volta uma vez para varrer o repo inteiro, da raiz, atrás de outras ocorrências do bug |
-| `hooks/compactar.txt` | `PreCompact` (manual, auto e idle): instrução de compactação; até 500 caracteres, o limite do Claude Code por hook |
+| `hooks/compactar.txt` | `PreCompact` (manual, auto e idle): prompt de compactação do colega, íntegro (o Claude Code aceita até 10.000 caracteres por hook) |
 | `tests/test_varredura.py` | testes do hook de varredura e do tamanho do texto de compactação: `python3 tests/test_varredura.py` |
 | `hooks/sem-assinatura.py` | barra commit/PR com assinatura do Claude |
 | `skills/blackboard` | atividades da faculdade no Blackboard |
