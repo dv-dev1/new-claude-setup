@@ -1,12 +1,18 @@
 Preserve the following verbatim or near-verbatim:
 
+The user's own instructions, preferences, corrections, approvals and rejections — quote them.
+The user's latest request and the exact next action.
 All file paths touched, created, or discussed (full paths).
 All code snippets, function signatures, and type definitions we wrote or debated.
 Architectural decisions AND the reasoning behind them (why we chose X over Y).
 Errors encountered and their exact resolutions — keep both the error and the fix.
+Commands run to verify work and their actual results (tests passed/failed, counts).
 Open questions and unresolved decisions — mark clearly as PENDING.
 Exact names: variables, env vars, DB columns, API endpoints, tool names.
+External state: branches, commit SHAs, what was pushed, PRs, URLs, background tasks or agents still running.
 Current state of work in progress (what's done, what's next, what's blocked).
+
+Never copy secret values (API keys, tokens, passwords): name them and say where they live.
 
 Do NOT collapse:
 Trade-off discussions into single sentences
@@ -15,9 +21,11 @@ Specific prompts, queries, or configurations into generic descriptions
 
 Structure the summary as:
 Context & Goal
+User Instructions & Preferences
 Key Decisions (with rationale)
 Code & Files Modified
 Errors & Resolutions
+Verification Status
 Current State
 Open Questions / Next Steps
 Err on the side of keeping more rather than less. Length is not a concern.

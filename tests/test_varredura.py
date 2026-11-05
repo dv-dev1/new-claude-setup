@@ -175,6 +175,18 @@ def test_compactar_e_o_prompt_integral_do_colega():
         assert trecho in texto, trecho
 
 
+def test_compactar_guarda_fala_do_usuario_verificacao_e_nao_copia_segredo():
+    texto = open(os.path.join(RAIZ, "hooks", "compactar.txt"), encoding="utf-8").read()
+    for trecho in ("The user's own instructions, preferences, corrections, approvals and rejections",
+                   "The user's latest request and the exact next action.",
+                   "Commands run to verify work and their actual results",
+                   "External state: branches, commit SHAs",
+                   "Never copy secret values",
+                   "User Instructions & Preferences",
+                   "Verification Status"):
+        assert trecho in texto, trecho
+
+
 if __name__ == "__main__":
     falhas = 0
     for nome, teste in sorted(globals().items()):
