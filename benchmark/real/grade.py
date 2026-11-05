@@ -28,6 +28,12 @@ def regressoes(repo, pasta):
     return [f for f in falhas if not TEMPO.search(f)]
 
 
+def origem(repo):
+    """O repo mora em ~/<nome> ou, desde 05/11/2026, dentro do workspace dele."""
+    casa = Path.home() / repo
+    return casa if casa.is_dir() else Path.home() / "Documents/agent-memory/projects" / repo / "repo"
+
+
 def escondido(repo, testes, pasta):
     if repo == "lancer":
         pacotes = sorted({"./" + str(Path(t).parent) + "/" for t in testes})
@@ -43,12 +49,12 @@ def corrigir(id_):
     out = R / "out" / id_
     repo, fix = TAREFAS[id_.split("-")[0]]
     run = Path((out / "caminho").read_text().strip())
-    testes = [f for f in git(Path.home() / repo, "diff-tree", "--no-commit-id", "--name-only", "-r", fix).splitlines() if EH_TESTE.search(f)]
+    testes = [f for f in git(origem(repo), "diff-tree", "--no-commit-id", "--name-only", "-r", fix).splitlines() if EH_TESTE.search(f)]
     with tempfile.TemporaryDirectory(dir=R) as tmp:
         copia = Path(tmp) / repo
         subprocess.run(["cp", "-cR", str(run), str(copia)], check=True)
         for t in testes:  # o teste escondido sobrescreve o que o agente deixou no mesmo arquivo
-            (copia / t).write_bytes(subprocess.run(["git", "-C", str(Path.home() / repo), "show", f"{fix}:{t}"], capture_output=True).stdout)
+            (copia / t).write_bytes(subprocess.run(["git", "-C", str(origem(repo)), "show", f"{fix}:{t}"], capture_output=True).stdout)
         ok, ps, fs = escondido(repo, testes, copia)
         regr = regressoes(repo, copia)
         suite = not regr
@@ -56,7 +62,7 @@ def corrigir(id_):
     skills = sorted({json.loads(l)["message"]["content"][i]["input"].get("skill", "")
                      for f in sorted(out.glob("s*.jsonl")) for l in f.read_text().splitlines() if '"name":"Skill"' in l
                      for i, b in enumerate(json.loads(l)["message"]["content"]) if b.get("name") == "Skill"})
-    pai = git(Path.home() / repo, "rev-parse", f"{fix}^")
+    pai = git(origem(repo), "rev-parse", f"{fix}^")
     nota = {"id": id_, "escondido_ok": ok, "pass": ps, "fail": fs, "suite_ok": suite, "regressoes": regr, "custo": s["custo"], "ms": s["ms"],
             "turnos": s["turnos"], "tokens_saida": s["tokens_saida"], "sessoes": s["sessoes"], "erros": s["erros"], "skills": skills,
             "commits": len(git(run, "rev-list", f"{pai}..HEAD").split()),

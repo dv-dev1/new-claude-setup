@@ -8,13 +8,15 @@ read -r _ repo fix < <(grep "^$t " "$R/tarefas.txt")
 h=$(printf '%s' "$id" | shasum | cut -c1-8)
 W="${BENCH_W:-${TMPDIR:-/tmp}/trabalho}/$h"; out="$R/out/$id"; run="$W/$repo"
 rm -rf "$W" "$out"; mkdir -p "$W" "$out"
-git clone -q --no-local --no-checkout "$HOME/$repo" "$run"
+# o repo mora em ~/<nome> ou, desde 05/11/2026, dentro do workspace dele
+src="$HOME/$repo"; [ -d "$src" ] || src="$HOME/Documents/agent-memory/projects/$repo/repo"
+git clone -q --no-local --no-checkout "$src" "$run"
 cd "$run"
 git checkout -q -B main "$fix^"
 git remote remove origin
 git for-each-ref --format='%(refname)' refs/heads refs/tags | grep -v '^refs/heads/main$' | xargs -n1 git update-ref -d 2>/dev/null
 git reflog expire --expire=now --all && git gc -q --prune=now
-[ -d "$HOME/$repo/node_modules" ] && cp -cR "$HOME/$repo/node_modules" .
+[ -d "$src/node_modules" ] && cp -cR "$src/node_modules" .
 echo "$run" > "$out/caminho"
 unset CLAUDECODE
 for v in $(env | awk -F= '/^CLAUDE_CODE_/ {print $1}'); do unset "$v"; done
