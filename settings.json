@@ -38,6 +38,26 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/.claude/hooks/varredura.py\""
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat \"$HOME/.claude/hooks/compactar.txt\""
+          }
+        ]
+      }
     ]
   },
   "theme": "dark",
@@ -67,18 +87,17 @@
     "caveman@caveman": true,
     "superpowers@superpowers-marketplace": true
   },
-  "outputStyle": "Concise",
+  "outputStyle": "default",
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "model": "opus",
   "skillOverrides": {
-    "caveman:investigate-first": "user-invocable-only",
-    "caveman:surgical-patch": "user-invocable-only",
-    "caveman:lean-build": "user-invocable-only",
-    "caveman:safe-refactor": "user-invocable-only",
-    "caveman:migration": "user-invocable-only",
-    "caveman:verify-and-stop": "user-invocable-only"
+    "anthropic-skills:morning": "off",
+    "anthropic-skills:import-memory": "off",
+    "anthropic-skills:google-workspace": "off",
+    "anthropic-skills:built-in-browser": "off",
+    "anthropic-skills:computer-use": "off"
   },
   "modelSettings": {
     "claude-opus-5-5": {
@@ -86,5 +105,7 @@
     }
   },
   "switchModelsOnFlag": true,
-  "teammateMode": "auto"
+  "teammateMode": "auto",
+  "autoCompactWindow": 600000,
+  "skillListingBudgetFraction": 0.03
 }
