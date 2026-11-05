@@ -67,5 +67,24 @@
     "caveman@caveman": true,
     "superpowers@superpowers-marketplace": true
   },
-  "outputStyle": "Concise"
+  "outputStyle": "Concise",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "model": "opus",
+  "skillOverrides": {
+    "caveman:investigate-first": "user-invocable-only",
+    "caveman:surgical-patch": "user-invocable-only",
+    "caveman:lean-build": "user-invocable-only",
+    "caveman:safe-refactor": "user-invocable-only",
+    "caveman:migration": "user-invocable-only",
+    "caveman:verify-and-stop": "user-invocable-only"
+  },
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
+  "switchModelsOnFlag": true,
+  "teammateMode": "auto"
 }

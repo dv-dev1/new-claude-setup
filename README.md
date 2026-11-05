@@ -4,8 +4,8 @@ Setup do Claude Code recomeçado do zero em 02/11/2026: só o que é usado de fa
 
 | O quê | Para quê |
 |---|---|
-| `CLAUDE.global.md` | pt-BR e identidade de commit, vira `~/.claude/CLAUDE.md` |
-| `settings.json` | bypass, output style Concise, statusline, tema, sem assinatura do Claude |
+| `CLAUDE.global.md` | pt-BR, identidade de commit, sem assinatura, superpowers em silêncio e skill arquitetura; vira `~/.claude/CLAUDE.md` |
+| `settings.json` | igual ao `~/.claude/settings.json`: bypass, Opus 5.5 em xhigh, agent teams, plugins, lembretes `UserPromptSubmit`, skills de ciclo do caveman só por comando, output style Concise, statusline, tema, sem assinatura do Claude |
 | `hooks/sem-assinatura.py` | barra commit/PR com assinatura do Claude |
 | `skills/blackboard` | atividades da faculdade no Blackboard |
 | `skills/curriculo-camaleao` | currículo adaptado por vaga |
