@@ -9,7 +9,7 @@ Setup do Claude Code recomeçado do zero em 02/11/2026: só o que é usado de fa
 | `hooks/sem-assinatura.py` | barra commit/PR com assinatura do Claude |
 | `skills/blackboard` | atividades da faculdade no Blackboard |
 | `skills/curriculo-camaleao` | currículo adaptado por vaga |
-| `skills/arquitetura` | projeto novo e decisão cara de desfazer: para com as opções contra as forças, espera a escolha e registra no `ARQUITETURA.md` |
+| `skills/arquitetura` | projeto novo e decisão cara de desfazer: para com as opções contra as forças, espera a escolha e registra no `ARCHITECTURE.md` (ou em `decisions/` dentro de workspace) |
 | plugin `superpowers` | ciclo de engenharia (brainstorming, plano, TDD, debugging, verificação), com lembrete no `UserPromptSubmit` para usar em silêncio ([obra/superpowers](https://github.com/obra/superpowers)) |
 | plugin `ponytail` | dev sênior preguiçoso: menos código, sem cortar validação nem teste ([DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)); o Claude Code instala sozinho via `settings.json` |
 | plugin `caveman` | respostas curtas no modo padrão, só o plugin, sem CLI/proxy ([JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman)) |

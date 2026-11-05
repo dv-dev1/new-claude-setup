@@ -1,6 +1,6 @@
 ---
 name: arquitetura
-description: "Use antes de qualquer código em projeto novo e em feature com decisão cara de desfazer: modelo de dado ou onde ele mora, contrato externo, auth, serviço com custo recorrente, síncrono × assíncrono (fila, cron, timer), topologia de deploy. Para com as opções pesadas contra as forças do projeto, espera a escolha do usuário e registra no ARQUITETURA.md. Não use em bug, rename ou ajuste."
+description: "Use antes de qualquer código em projeto novo e em feature com decisão cara de desfazer: modelo de dado ou onde ele mora, contrato externo, auth, serviço com custo recorrente, síncrono × assíncrono (fila, cron, timer), topologia de deploy. Para com as opções pesadas contra as forças do projeto, espera a escolha do usuário e registra no ARCHITECTURE.md. Não use em bug, rename ou ajuste."
 ---
 
 # Arquitetura antes de codar
@@ -23,7 +23,7 @@ Decisão de arquitetura é porta de mão única: custa caro desfazer. Ela se dec
 
 ## 1. Forças
 
-Leia código, README, specs e o `git log` (`Por quê:`, `Recusado:`) antes de propor. As forças moram no `ARQUITETURA.md`, na raiz, numa página:
+Leia código, README, specs e o `git log` (`Por quê:`, `Recusado:`) antes de propor. As forças moram no `ARCHITECTURE.md`, na raiz, numa página:
 
 ```markdown
 # Arquitetura
@@ -41,8 +41,9 @@ Leia código, README, specs e o `git log` (`Por quê:`, `Recusado:`) antes de pr
 ```
 
 - Repo sem o arquivo: rascunhe pelo código, specs e `git log`, com `?` no que não souber. O rascunho vai na mensagem da parada para o usuário corrigir.
-- Repo com `docs/adr/` ou outra convenção de decisão: siga a dele em vez de criar o `ARQUITETURA.md`.
-- Projeto novo: estime com número (usuários, requisições/dia, dados em 1 ano, pico) e ponha nas Forças; sem número do usuário, proponha um com `?`. O `ARQUITETURA.md` fica na raiz e é aprovado junto com o design doc do brainstorming.
+- Repo com `docs/adr/` ou outra convenção de decisão: siga a dele em vez de criar o `ARCHITECTURE.md`.
+- Dentro de workspace (pasta com `AGENTS.md`, `decisions/` e o código em `repo/`): o `ARCHITECTURE.md` fica na raiz do workspace, não em `repo/`; cada decisão vai em `decisions/AAAA-MM-DD-slug.md` (slug em inglês) com Contexto, Decisão, Alternativas, Consequências, Revisitar quando e Status, no lugar da tabela. Projeto novo segue a organização por funcionalidade do `STANDARD.md` do workspace-standard: pasta com o nome do negócio, `model`, `routes`/`handler`, `view`, `shared/`, nomes em inglês.
+- Projeto novo: estime com número (usuários, requisições/dia, dados em 1 ano, pico) e ponha nas Forças; sem número do usuário, proponha um com `?`. O `ARCHITECTURE.md` fica na raiz e é aprovado junto com o design doc do brainstorming.
 
 ## 2. A parada
 
@@ -77,4 +78,4 @@ Antes de escrever código, uma mensagem com as Forças (ou o rascunho) e a tabel
   Olhe: <arquivo:linha onde a decisão mora>
   ```
 
-- Repo sem git, sem `origin` (identidade de commit incerta) ou em que o commit não sai: escreva o `ARQUITETURA.md` mesmo assim e ponha `Por quê:`, `Recusado:` e `Olhe:` na resposta final.
+- Repo sem git, sem `origin` (identidade de commit incerta) ou em que o commit não sai: escreva o `ARCHITECTURE.md` mesmo assim e ponha `Por quê:`, `Recusado:` e `Olhe:` na resposta final.
