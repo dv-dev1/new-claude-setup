@@ -31,12 +31,12 @@ def edit():
     return ferramenta("Edit", {"file_path": "/x.py"})
 
 
-def resultado():
-    return {"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": "t", "content": "ok"}]}}
+def resultado(**extra):
+    return {"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": "t", "content": "ok"}]}, **extra}
 
 
-def meta():
-    return {"type": "user", "isMeta": True, "message": {"content": [{"type": "text", "text": "Base directory for this skill"}]}}
+def meta(texto="Base directory for this skill"):
+    return {"type": "user", "isMeta": True, "message": {"content": [{"type": "text", "text": texto}]}}
 
 
 def test_debug_e_edicao_no_turno_bloqueia():
@@ -59,6 +59,64 @@ def test_tool_result_e_meta_nao_abrem_turno():
     assert varredura.precisa_varrer([humano("bug"), debug(), resultado(), meta(), edit()]) is True
 
 
+def test_varredura_anterior_fecha_a_janela():
+    feedback = {"type": "user", "isMeta": True, "message": {"content": "Stop hook feedback:\n" + varredura.MOTIVO}}
+    aviso = humano("<task-notification>\n<task-id>x</task-id>\n</task-notification>")
+    assert varredura.precisa_varrer([humano("bug"), debug(), edit(), feedback, ferramenta("Bash"), aviso]) is False
+
+
+def test_slash_command_abre_turno():
+    comando = humano("<command-message>caveman-review</command-message>\n<command-name>/caveman-review</command-name>")
+    assert varredura.precisa_varrer([humano("bug"), debug(), edit(), comando, edit()]) is False
+
+
+def test_compactacao_no_meio_do_turno_nao_perde_o_debug():
+    resumo = {"type": "user", "isCompactSummary": True,
+              "message": {"content": "This session is being continued from a previous conversation."}}
+    assert varredura.precisa_varrer([humano("bug"), debug(), resumo, edit()]) is True
+
+
+def test_debug_digitado_como_slash_command_conta():
+    comando = humano("<command-message>superpowers:systematic-debugging</command-message>\n"
+                     "<command-name>/superpowers:systematic-debugging</command-name>")
+    carga = meta("Base directory for this skill: /c/superpowers/7.0.1/skills/systematic-debugging\n\n# Systematic Debugging")
+    assert varredura.precisa_varrer([comando, carga, edit()]) is True
+
+
+def gravar(pasta, entradas, subagentes=None):
+    """Transcript da sessão em `pasta`, com subagentes em `<sessao>/subagents/agent-<id>.jsonl`."""
+    caminho = os.path.join(pasta, "sessao.jsonl")
+    with open(caminho, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(json.dumps(e) for e in entradas) + "\nlinha quebrada{\n")
+    for agente, linhas in (subagentes or {}).items():
+        os.makedirs(os.path.join(pasta, "sessao", "subagents"), exist_ok=True)
+        with open(os.path.join(pasta, "sessao", "subagents", f"agent-{agente}.jsonl"), "w", encoding="utf-8") as fh:
+            fh.write("\n".join(json.dumps(e) for e in linhas))
+    return caminho
+
+
+def delegou(agente):
+    return [ferramenta("Agent", {"prompt": "corrige"}), resultado(toolUseResult={"agentId": agente, "status": "completed"})]
+
+
+def test_edicao_feita_por_subagente_conta():
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("bug"), debug(), *delegou("abc")], {"abc": [humano("corrige"), edit()]})
+        assert varredura.precisa_varrer(varredura.ler(caminho), caminho) is True
+
+
+def test_subagente_que_so_le_nao_conta():
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("bug"), debug(), *delegou("abc")], {"abc": [humano("procura"), ferramenta("Grep")]})
+        assert varredura.precisa_varrer(varredura.ler(caminho), caminho) is False
+
+
+def test_subagente_sem_transcript_nao_quebra():
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("bug"), debug(), *delegou("sumiu")])
+        assert varredura.precisa_varrer(varredura.ler(caminho), caminho) is False
+
+
 def rodar_main(entrada):
     saida = io.StringIO()
     stdin = sys.stdin
@@ -71,27 +129,35 @@ def rodar_main(entrada):
     return saida.getvalue()
 
 
-def transcript(entradas):
-    fh = tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False)
-    fh.write("\n".join(json.dumps(e) for e in entradas) + "\nlinha quebrada{\n")
-    fh.close()
-    return fh.name
-
-
 def test_main_stop_hook_active_nao_imprime():
-    caminho = transcript([humano("bug"), debug(), edit()])
-    assert rodar_main({"stop_hook_active": True, "transcript_path": caminho}) == ""
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("bug"), debug(), edit()])
+        assert rodar_main({"stop_hook_active": True, "transcript_path": caminho}) == ""
 
 
 def test_main_transcript_inexistente_nao_imprime():
     assert rodar_main({"stop_hook_active": False, "transcript_path": "/nao/existe.jsonl"}) == ""
 
 
+def test_main_transcript_vazio_nao_imprime():
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = os.path.join(pasta, "vazio.jsonl")
+        open(caminho, "w").close()
+        assert rodar_main({"stop_hook_active": False, "transcript_path": caminho}) == ""
+
+
 def test_main_bloqueia_imprime_json():
-    caminho = transcript([humano("bug"), debug(), edit()])
-    saida = json.loads(rodar_main({"stop_hook_active": False, "transcript_path": caminho}))
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("bug"), debug(), edit()])
+        saida = json.loads(rodar_main({"stop_hook_active": False, "transcript_path": caminho}))
     assert saida["decision"] == "block"
     assert "raiz" in saida["reason"]
+
+
+def test_main_bloqueia_com_edicao_de_subagente():
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("bug"), debug(), *delegou("abc")], {"abc": [humano("corrige"), edit()]})
+        assert json.loads(rodar_main({"stop_hook_active": False, "transcript_path": caminho}))["decision"] == "block"
 
 
 def test_compactar_cabe_no_limite_do_precompact():
@@ -99,17 +165,6 @@ def test_compactar_cabe_no_limite_do_precompact():
     assert len(texto) <= 10000, len(texto)  # limite do Claude Code por saída de hook PreCompact
     for trecho in ("PENDING", "Context & Goal", "Open Questions"):
         assert trecho in texto, trecho
-
-
-def test_varredura_anterior_fecha_a_janela():
-    feedback = {"type": "user", "isMeta": True, "message": {"content": "Stop hook feedback:\n" + varredura.MOTIVO}}
-    aviso = humano("<task-notification>\n<task-id>x</task-id>\n</task-notification>")
-    assert varredura.precisa_varrer([humano("bug"), debug(), edit(), feedback, ferramenta("Bash"), aviso]) is False
-
-
-def test_slash_command_abre_turno():
-    comando = humano("<command-message>caveman-review</command-message>\n<command-name>/caveman-review</command-name>")
-    assert varredura.precisa_varrer([humano("bug"), debug(), edit(), comando, edit()]) is False
 
 
 def test_compactar_e_o_prompt_integral_do_colega():

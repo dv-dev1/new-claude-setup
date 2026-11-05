@@ -106,6 +106,6 @@
   },
   "switchModelsOnFlag": true,
   "teammateMode": "auto",
-  "autoCompactWindow": 600000,
+  "autoCompactWindow": 550000,
   "skillListingBudgetFraction": 0.03
 }

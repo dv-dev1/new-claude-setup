@@ -2,12 +2,14 @@
 """Stop: turno que rodou systematic-debugging e editou arquivo volta uma vez para varrer o repo
 inteiro atrás de outras ocorrências do bug. Erro de leitura libera o turno, nunca o trava."""
 import json
+import os
 import sys
 
 EDICAO = {"Edit", "Write", "MultiEdit", "NotebookEdit"}
 # Chega como `user` mas não abre turno: saída de comando local, lembrete e aviso de tarefa.
 # Eco de slash command abre: é fala humana.
 NAO_HUMANO = ("<local-command-", "<system-reminder>", "<task-notification>")
+CARGA_DE_SKILL = "Base directory for this skill:"
 MOTIVO = (
     "Varredura: este turno corrigiu um bug. Antes de encerrar, procure outras ocorrências do mesmo padrão "
     "no repo inteiro, partindo da raiz (`git rev-parse --show-toplevel`; fora de git, suba até a raiz do "
@@ -17,32 +19,59 @@ MOTIVO = (
 )
 
 
-def abre_turno(entrada):
+def texto(entrada):
     conteudo = (entrada.get("message") or {}).get("content")
-    # O feedback desta varredura fecha a janela: o que veio antes já foi varrido.
-    if entrada.get("isMeta") and isinstance(conteudo, str) and MOTIVO[:40] in conteudo:
-        return True
-    if entrada.get("type") != "user" or entrada.get("isMeta") or entrada.get("isSidechain"):
-        return False
     if isinstance(conteudo, list):
         conteudo = "\n".join(b.get("text") or "" for b in conteudo if isinstance(b, dict) and b.get("type") == "text")
-    texto = (conteudo or "").strip() if isinstance(conteudo, str) else ""
-    return bool(texto) and not texto.startswith(NAO_HUMANO)
+    return conteudo.strip() if isinstance(conteudo, str) else ""
 
 
-def precisa_varrer(entradas):
+def abre_turno(entrada):
+    # O feedback desta varredura fecha a janela: o que veio antes já foi varrido.
+    if entrada.get("isMeta") and MOTIVO[:40] in texto(entrada):
+        return True
+    # O resumo de compactação não é fala humana: o turno segue antes dele no mesmo arquivo.
+    if entrada.get("type") != "user" or entrada.get("isMeta") or entrada.get("isSidechain") or entrada.get("isCompactSummary"):
+        return False
+    corpo = texto(entrada)
+    return bool(corpo) and not corpo.startswith(NAO_HUMANO)
+
+
+def ferramentas(entrada):
+    if entrada.get("type") != "assistant" or entrada.get("isSidechain"):
+        return []
+    blocos = (entrada.get("message") or {}).get("content") or []
+    return [b for b in blocos if isinstance(b, dict) and b.get("type") == "tool_use"]
+
+
+def subagente_editou(caminho, agente):
+    # O Claude Code grava cada subagente em <sessão>/subagents/agent-<id>.jsonl, ao lado do transcript.
+    arquivo = os.path.join(os.path.splitext(caminho)[0], "subagents", f"agent-{agente}.jsonl")
+    try:
+        return any(b.get("name") in EDICAO for e in ler(arquivo) for b in ferramentas(e))
+    except OSError:
+        return False
+
+
+def precisa_varrer(entradas, caminho=None):
     debug = editou = False
+    agentes = []
     for entrada in reversed(entradas):
         if abre_turno(entrada):
             break
-        if entrada.get("type") != "assistant" or entrada.get("isSidechain"):
-            continue
-        for bloco in (entrada.get("message") or {}).get("content") or []:
-            if not isinstance(bloco, dict) or bloco.get("type") != "tool_use":
-                continue
+        corpo = texto(entrada) if entrada.get("isMeta") else ""
+        # Skill chamada pela ferramenta ou digitada como /superpowers:systematic-debugging carrega igual.
+        if corpo.startswith(CARGA_DE_SKILL) and corpo.splitlines()[0].rstrip("/").endswith("systematic-debugging"):
+            debug = True
+        resultado = entrada.get("toolUseResult")
+        if isinstance(resultado, dict) and resultado.get("agentId"):
+            agentes.append(str(resultado["agentId"]))
+        for bloco in ferramentas(entrada):
             if bloco.get("name") == "Skill" and str((bloco.get("input") or {}).get("skill", "")).endswith("systematic-debugging"):
                 debug = True
             editou = editou or bloco.get("name") in EDICAO
+    if debug and not editou and caminho:
+        editou = any(subagente_editou(caminho, agente) for agente in agentes)
     return debug and editou
 
 
@@ -60,7 +89,8 @@ def ler(caminho):
 def main():
     try:
         dados = json.load(sys.stdin)
-        if dados.get("stop_hook_active") or not precisa_varrer(ler(dados["transcript_path"])):
+        caminho = dados["transcript_path"]
+        if dados.get("stop_hook_active") or not precisa_varrer(ler(caminho), caminho):
             return
     except Exception:
         return
