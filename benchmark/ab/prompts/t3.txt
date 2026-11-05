@@ -1,0 +1,1 @@
+No relatorios, renomeia `calcularTotal` para `somarItens` no projeto todo e faz o commit. Sem push.

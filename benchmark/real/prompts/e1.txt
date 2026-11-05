@@ -1,0 +1,1 @@
+No etros-n8n, a triagem tá marcando carga como DG (perigosa) quando o e-mail diz "200 un de cadeiras"; esse "un" é unidade, não número ONU. "UN 1263" ou "UN1263" continua sendo DG. E "manter a -18ºC" (com º ordinal, que muita gente digita no lugar de °) não está contando como carga fria, enquanto "-18°C" funciona. Corrige os dois.

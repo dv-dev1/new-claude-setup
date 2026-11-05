@@ -16,6 +16,8 @@ mkdir -p "$C/hooks"
 for h in "$REPO"/hooks/*; do
   ligar "$h" "$C/hooks/$(basename "$h")"
 done
+mkdir -p "$HOME/.config/ccstatusline"
+ligar "$REPO/config/ccstatusline.json" "$HOME/.config/ccstatusline/settings.json"
 for s in "$REPO"/skills/*/; do
   s="${s%/}"
   ligar "$s" "$C/skills/$(basename "$s")"

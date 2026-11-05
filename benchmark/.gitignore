@@ -1,0 +1,10 @@
+*/out/
+ab/juiz/
+real/val/
+real/tmp.*
+*.log
+antigo/repo/
+antigo/cfg/
+antigo/plugin/
+antigo/settings-antigo.json
+validacao/

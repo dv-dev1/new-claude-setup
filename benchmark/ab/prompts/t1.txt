@@ -1,0 +1,1 @@
+Bug no agenda-consultas: a paciente marcou consulta para 01/03/2026 e a confirmação chegou como "sábado, 28/02/2026". O servidor roda em São Paulo. Corrige.

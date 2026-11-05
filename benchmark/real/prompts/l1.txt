@@ -1,0 +1,1 @@
+No lancer, a coleta inteira cai quando o Detalhar de um lugar só falha (por exemplo, a API devolve 500). Uma falha isolada não pode derrubar a rodada: esse lead vira descarte com motivo começando por `erro:` (como ainda não se sabe o nome do lugar, usa o place ID) e a coleta segue com os outros. Corrige.

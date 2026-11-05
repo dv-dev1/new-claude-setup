@@ -1,0 +1,9 @@
+No cardapio, quero busca de produtos. Cria `buscar(produtos, consulta)` em src/catalogo.js e `telaBusca(produtos, consulta)` em src/tela.js.
+
+Regras:
+1. Ignora acento, maiúscula e espaço sobrando: "pao" acha "Pão de Queijo".
+2. Cada palavra da consulta tem que ser o começo de alguma palavra do nome, em qualquer ordem: "queijo pao" acha "Pão de Queijo"; "ao" não acha.
+3. Só produto disponível.
+4. Ordem: primeiro os que o nome começa com a primeira palavra da consulta, depois o resto; em cada grupo, ordem alfabética do nome, sem ligar pra acento nem maiúscula.
+5. Consulta vazia, ou só com espaço, devolve todos os disponíveis em ordem alfabética.
+6. telaBusca: a primeira linha é "3 produtos" ou "1 produto"; sem resultado, só a linha `Nenhum produto para "<consulta>"`, com a consulta como a pessoa digitou, sem o espaço das pontas. Depois, uma linha por produto, no formato da telaCatalogo.

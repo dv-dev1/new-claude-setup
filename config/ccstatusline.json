@@ -1,0 +1,117 @@
+{
+  "version": 4,
+  "lines": [
+    [
+      {
+        "id": "a",
+        "type": "custom-text",
+        "customText": "◆ ",
+        "color": "hex:cba6f7"
+      },
+      {
+        "id": "1",
+        "type": "model",
+        "color": "hex:cba6f7",
+        "bold": true,
+        "rawValue": true
+      },
+      {
+        "id": "s1",
+        "type": "custom-text",
+        "customText": "  │  ",
+        "color": "hex:45475a"
+      },
+      {
+        "id": "9",
+        "type": "context-bar",
+        "color": "hex:89b4fa",
+        "rawValue": true
+      },
+      {
+        "id": "s2",
+        "type": "custom-text",
+        "customText": "  │  ",
+        "color": "hex:45475a"
+      },
+      {
+        "id": "b",
+        "type": "custom-text",
+        "customText": "5h ",
+        "color": "hex:7f849c"
+      },
+      {
+        "id": "11",
+        "type": "session-usage",
+        "color": "hex:fab387",
+        "rawValue": true
+      },
+      {
+        "id": "c",
+        "type": "custom-text",
+        "customText": "  ↻ ",
+        "color": "hex:6c7086"
+      },
+      {
+        "id": "12",
+        "type": "reset-timer",
+        "color": "hex:a6adc8",
+        "rawValue": true
+      },
+      {
+        "id": "s3",
+        "type": "custom-text",
+        "customText": "  │  ",
+        "color": "hex:45475a"
+      },
+      {
+        "id": "d",
+        "type": "custom-text",
+        "customText": "7d ",
+        "color": "hex:7f849c"
+      },
+      {
+        "id": "14",
+        "type": "weekly-usage",
+        "color": "hex:f5c2e7",
+        "rawValue": true
+      },
+      {
+        "id": "e",
+        "type": "custom-text",
+        "customText": "  ↻ ",
+        "color": "hex:6c7086"
+      },
+      {
+        "id": "15",
+        "type": "weekly-reset-timer",
+        "color": "hex:a6adc8",
+        "rawValue": true
+      }
+    ],
+    [],
+    []
+  ],
+  "flexMode": "full",
+  "compactThreshold": 60,
+  "colorLevel": 3,
+  "defaultPaddingSide": "both",
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "gitCacheTtlSeconds": 5,
+  "terminalWidthCacheTtlSeconds": 5,
+  "customCommandCacheTtlSeconds": 0,
+  "minimalistMode": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [
+      ""
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false,
+    "continueThemeAcrossLines": false
+  }
+}

@@ -14,6 +14,9 @@ Setup do Claude Code recomeçado do zero em 02/11/2026: só o que é usado de fa
 | plugin `ponytail` | dev sênior preguiçoso: menos código, sem cortar validação nem teste ([DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)); o Claude Code instala sozinho via `settings.json` |
 | plugin `caveman` | respostas curtas no modo padrão, só o plugin, sem CLI/proxy ([JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman)) |
 | skill `playwright-cli` | instalada pelo próprio CLI, na versão dele |
+| `skills/agent-desktop` | apps do Mac pela árvore de acessibilidade; precisa do CLI (`npm i -g agent-desktop`) |
+| `config/ccstatusline.json` | layout da statusline, vira `~/.config/ccstatusline/settings.json` |
+| `benchmark/` | mede setups nas mesmas tarefas (sintéticas e bugs reais) com juiz cego; ver `benchmark/README.md` |
 
 ## Instalar
 

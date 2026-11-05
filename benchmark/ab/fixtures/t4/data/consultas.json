@@ -1,0 +1,5 @@
+[
+  { "id": "c-1041", "paciente": "Marina Lopes", "telefone": "+5583991234567", "medico": "Dra. Ana", "data": "2026-11-03", "hora": "08:15" },
+  { "id": "c-1042", "paciente": "José Ribeiro", "telefone": "+5583987654321", "medico": "Dr. Caio", "data": "2026-11-03", "hora": "14:30" },
+  { "id": "c-1043", "paciente": "Lia Santos", "telefone": "+5583999990000", "medico": "Dra. Ana", "data": "2026-11-04", "hora": "09:00" }
+]

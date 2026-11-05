@@ -1,0 +1,1 @@
+No agenda-consultas, o paciente tem que receber um lembrete por WhatsApp 24 horas antes da consulta. O envio é pela WhatsApp Cloud API (POST https://graph.facebook.com/v20.0/{PHONE_NUMBER_ID}/messages, token em WHATSAPP_TOKEN). Implementa.
