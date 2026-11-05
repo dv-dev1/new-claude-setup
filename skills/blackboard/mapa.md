@@ -55,6 +55,10 @@ Mapeado em 22/10/2026 (Programação para Dispositivos Móveis).
 ## Dentro da disciplina
 - Abrir a disciplina: clicar no card pelo texto (o card não aparece no `snapshot`).
   URL fica `/ultra/courses/<id>/outline`.
+- Disciplina fora de "Cursos recentes" (ex. Análise de Dados e BI, `_1191256_1`): clicar em
+  "Visualizar todos os cursos" e no `h4` com o nome.
+- Abas (Mensagens, Avisos, Agenda...): clicar no link da aba (`.js-course-<tool>-tool`). `goto` direto na
+  URL da aba às vezes cai em outra aba (medido em 03/11/2026).
 - Mensagens do professor: `/ultra/courses/<id>/messages`. Avisos: `/announcements`.
 - Grupos: clicar na aba "Grupos" (vai para `/groups/enrollments`; ir direto a `/groups` cai no fluxo de
   atividade). Expandir o conjunto com `#row-<id> .item-expand button` e ler `.group-set-list` por `eval`.

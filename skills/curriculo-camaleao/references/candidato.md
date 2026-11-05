@@ -196,6 +196,20 @@ só na conversa.
     candidato em 21/10/2026. Nome do modelo digitado como "laya", provável
     Llama, NÃO confirmado: não nomear. Métricas, hardware e framework de
     serviço não informados. Em material público, não nomear o cliente.)
+  - Multi-agente no case do hospital de grande porte: um agente classificador
+    de intenção (modelo local open-source quantizado) direciona o usuário para
+    agentes especializados, por exemplo atendimento de cardiologia.
+    (Confirmado pelo candidato em 04/11/2026. Em material público, não nomear
+    o cliente.)
+  - Monitoramento em produção dos agentes por logs próprios da aplicação (sem
+    ferramenta externa). Uso do OpenRouter para escolher/rotear modelos
+    ("sim, utilizo"). (Confirmado em 04/11/2026; critério de roteamento por
+    tarefa/custo/fallback não detalhado.)
+  - Banco do Nordeste, ESTIMATIVAS NÃO CONFIRMADAS (04/11/2026, dito com
+    "acho"): ~20 mil usuários/mês, ~200 consultas/dia, ganho de ~30% na taxa
+    de marcações. NÃO usar no currículo até o candidato confirmar os números.
+  - Etros: ainda não está em produção (04/11/2026); não escrever resultado
+    nem "em produção".
   - Soluções em arquitetura multi-tenant nos projetos do "RHP", o cliente
     hospitalar de grande porte. (Confirmado pelo candidato em 25/09/2026:
     "RHP" é o hospital de grande porte, o mesmo cliente sob NDA. Em material
@@ -261,6 +275,22 @@ só na conversa.
 ## Formação Acadêmica
 - **Unipê — Centro Universitário de João Pessoa:** Curso Superior de
   Tecnologia (CST), Análise e Desenvolvimento de Sistemas — 2025/2026.
+- **UNIESP Centro Universitário — MBA AI Engineering, Data Platforms & MLOps (pós-graduação, em andamento):**
+  novembro/2026 — novembro/2027 (previsão), 12 meses, 360 h, 100% presencial
+  com aulas práticas em laboratório, encontros quinzenais aos sábados.
+  (Confirmado pelo candidato em 04/11/2026; instituição UNIESP confirmada na
+  mesma data. Sempre escrever "em andamento",
+  "previsão de conclusão nov/2027", nunca como concluído.)
+  - Módulos (só os relevantes à vaga): Data Architecture & Engineering,
+    Data Pipelines/Quality/Platforms, AI Data Engineering (Feature Engineering,
+    Embeddings, Vector Search, MLOps), Statistical Inference & Modeling, Data
+    Mining, Applied Machine Learning, Deep Learning & Neural Networks, Model
+    Optimization & XAI, GenAI Engineering (RAG, LLMOps), Agentic AI Engineering
+    (orquestração, guardrails, multi-agentes), Agentic & Harness Engineering,
+    AI Systems Evaluation/Observability/Security/Governance, Hackathon de Dados e IA.
+  - Atenção: cursar ML/Deep Learning/Estatística/MLOps é formação em
+    andamento, NÃO experiência profissional. Ao usar essas keywords, atribuir à
+    formação (ou "familiaridade em estudo"), nunca a empregos.
 - **UNIESP Centro Universitário:** Processamento de Dados e Tecnologia de
   Processamento de Dados — agosto/2023 a novembro/2023.
 
