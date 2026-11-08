@@ -51,8 +51,29 @@ def test_edicao_sem_debug_nao_bloqueia():
     assert varredura.precisa_varrer([humano("renomeia"), edit()]) is False
 
 
-def test_debug_em_turno_anterior_nao_bloqueia():
-    assert varredura.precisa_varrer([humano("bug"), debug(), humano("agora troca o texto"), edit()]) is False
+def test_correcao_no_turno_seguinte_ao_debug_bloqueia():
+    assert varredura.precisa_varrer([humano("bug"), debug(), resultado(), humano("pode corrigir"), edit()]) is True
+
+
+def test_debug_dois_turnos_atras_nao_bloqueia():
+    assert varredura.precisa_varrer([humano("bug"), debug(), humano("e o log?"), ferramenta("Read"),
+                                     humano("agora troca o texto"), edit()]) is False
+
+
+def test_debug_anterior_que_ja_editou_nao_bloqueia():
+    assert varredura.precisa_varrer([humano("bug"), debug(), edit(), humano("agora troca o texto"), edit()]) is False
+
+
+def test_debug_anterior_por_slash_command_conta():
+    comando = humano("<command-message>superpowers:systematic-debugging</command-message>\n"
+                     "<command-name>/superpowers:systematic-debugging</command-name>")
+    carga = meta("Base directory for this skill: /c/superpowers/7.0.1/skills/systematic-debugging\n\n# Systematic Debugging")
+    assert varredura.precisa_varrer([comando, carga, humano("pode corrigir"), edit()]) is True
+
+
+def test_varredura_no_turno_anterior_fecha_a_janela():
+    feedback = {"type": "user", "isMeta": True, "message": {"content": "Stop hook feedback:\n" + varredura.MOTIVO}}
+    assert varredura.precisa_varrer([humano("bug"), debug(), feedback, humano("e agora?"), edit()]) is False
 
 
 def test_tool_result_e_meta_nao_abrem_turno():
@@ -84,19 +105,32 @@ def test_debug_digitado_como_slash_command_conta():
 
 
 def gravar(pasta, entradas, subagentes=None):
-    """Transcript da sessão em `pasta`, com subagentes em `<sessao>/subagents/agent-<id>.jsonl`."""
+    """Transcript da sessão em `pasta`, com subagentes em `<sessao>/subagents/agent-<id>.jsonl`.
+    Como no transcript real, toda entrada de subagente vem com `isSidechain: true`."""
     caminho = os.path.join(pasta, "sessao.jsonl")
     with open(caminho, "w", encoding="utf-8") as fh:
         fh.write("\n".join(json.dumps(e) for e in entradas) + "\nlinha quebrada{\n")
     for agente, linhas in (subagentes or {}).items():
         os.makedirs(os.path.join(pasta, "sessao", "subagents"), exist_ok=True)
         with open(os.path.join(pasta, "sessao", "subagents", f"agent-{agente}.jsonl"), "w", encoding="utf-8") as fh:
-            fh.write("\n".join(json.dumps(e) for e in linhas))
+            fh.write("\n".join(json.dumps({**e, "isSidechain": True}) for e in linhas))
     return caminho
 
 
 def delegou(agente):
     return [ferramenta("Agent", {"prompt": "corrige"}), resultado(toolUseResult={"agentId": agente, "status": "completed"})]
+
+
+def test_debug_e_edicao_dentro_do_subagente_bloqueia():
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("corrige o bug"), *delegou("abc")], {"abc": [humano("corrige"), debug(), edit()]})
+        assert varredura.precisa_varrer(varredura.ler(caminho), caminho) is True
+
+
+def test_subagente_com_debug_sem_edicao_nao_bloqueia():
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("investiga"), *delegou("abc")], {"abc": [humano("investiga"), debug()]})
+        assert varredura.precisa_varrer(varredura.ler(caminho), caminho) is False
 
 
 def test_edicao_feita_por_subagente_conta():

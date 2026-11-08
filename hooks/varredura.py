@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Stop: turno que rodou systematic-debugging e editou arquivo volta uma vez para varrer o repo
-inteiro atrás de outras ocorrências do bug. Erro de leitura libera o turno, nunca o trava."""
+inteiro atrás de outras ocorrências do bug. Conta também o debug feito dentro de subagente lançado
+no turno e o debug do turno anterior que não editou (a correção veio agora, no "pode corrigir").
+Erro de leitura libera o turno, nunca o trava."""
 import json
 import os
 import sys
@@ -37,41 +39,58 @@ def abre_turno(entrada):
     return bool(corpo) and not corpo.startswith(NAO_HUMANO)
 
 
-def ferramentas(entrada):
-    if entrada.get("type") != "assistant" or entrada.get("isSidechain"):
+def ferramentas(entrada, subagente=False):
+    # No transcript do subagente toda entrada vem com isSidechain; só no da sessão a flag marca eco a ignorar.
+    if entrada.get("type") != "assistant" or (entrada.get("isSidechain") and not subagente):
         return []
     blocos = (entrada.get("message") or {}).get("content") or []
     return [b for b in blocos if isinstance(b, dict) and b.get("type") == "tool_use"]
 
 
-def subagente_editou(caminho, agente):
-    # O Claude Code grava cada subagente em <sessão>/subagents/agent-<id>.jsonl, ao lado do transcript.
-    arquivo = os.path.join(os.path.splitext(caminho)[0], "subagents", f"agent-{agente}.jsonl")
-    try:
-        return any(b.get("name") in EDICAO for e in ler(arquivo) for b in ferramentas(e))
-    except OSError:
-        return False
-
-
-def precisa_varrer(entradas, caminho=None):
+def sinais(entradas, caminho, subagente=False):
+    """(debug, editou) das entradas e, no transcript da sessão, dos subagentes lançados nelas."""
     debug = editou = False
-    agentes = []
-    for entrada in reversed(entradas):
-        if abre_turno(entrada):
-            break
+    for entrada in entradas:
         corpo = texto(entrada) if entrada.get("isMeta") else ""
         # Skill chamada pela ferramenta ou digitada como /superpowers:systematic-debugging carrega igual.
         if corpo.startswith(CARGA_DE_SKILL) and corpo.splitlines()[0].rstrip("/").endswith("systematic-debugging"):
             debug = True
-        resultado = entrada.get("toolUseResult")
-        if isinstance(resultado, dict) and resultado.get("agentId"):
-            agentes.append(str(resultado["agentId"]))
-        for bloco in ferramentas(entrada):
+        for bloco in ferramentas(entrada, subagente):
             if bloco.get("name") == "Skill" and str((bloco.get("input") or {}).get("skill", "")).endswith("systematic-debugging"):
                 debug = True
             editou = editou or bloco.get("name") in EDICAO
-    if debug and not editou and caminho:
-        editou = any(subagente_editou(caminho, agente) for agente in agentes)
+        resultado = entrada.get("toolUseResult")
+        if caminho and not subagente and isinstance(resultado, dict) and resultado.get("agentId"):
+            debug_sub, editou_sub = sinais_do_subagente(caminho, str(resultado["agentId"]))
+            debug, editou = debug or debug_sub, editou or editou_sub
+    return debug, editou
+
+
+def sinais_do_subagente(caminho, agente):
+    # O Claude Code grava cada subagente em <sessão>/subagents/agent-<id>.jsonl, ao lado do transcript.
+    arquivo = os.path.join(os.path.splitext(caminho)[0], "subagents", f"agent-{agente}.jsonl")
+    try:
+        return sinais(ler(arquivo), caminho, subagente=True)
+    except OSError:
+        return False, False
+
+
+def precisa_varrer(entradas, caminho=None):
+    atual, anterior = [], []
+    alvo = atual
+    for entrada in reversed(entradas):
+        if abre_turno(entrada):
+            # isMeta aqui só pode ser o feedback da varredura: fecha a janela. Fala humana passa ao turno anterior.
+            if entrada.get("isMeta") or alvo is anterior:
+                break
+            alvo = anterior
+            continue
+        alvo.append(entrada)
+    debug, editou = sinais(atual, caminho)
+    if editou and not debug:
+        # Debug sem correção no turno anterior: esta edição é a correção ("pode corrigir").
+        debug_anterior, editou_anterior = sinais(anterior, caminho)
+        debug = debug_anterior and not editou_anterior
     return debug and editou
 
 
