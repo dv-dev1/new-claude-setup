@@ -24,6 +24,8 @@ Fechar as três brechas que a comparação achou: a lista de skills fica mínima
 
    A varredura anterior continua fechando a janela. O teste que travava o caso entre turnos muda de lado.
 
+   Achado ao planejar: no transcript real de subagente toda entrada tem `isSidechain: true`, e o `ferramentas()` descarta essas entradas. A edição feita por subagente nunca contou na prática; o teste passava porque a fixture não tinha a flag. A fixture fica realista e a leitura do subagente para de descartar a flag.
+
 ## Fora
 
 - Compactação: fica em 550k.
