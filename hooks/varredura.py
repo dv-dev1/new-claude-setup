@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Stop: turno que rodou systematic-debugging e editou arquivo volta uma vez para varrer o repo
-inteiro atrás de outras ocorrências do bug. Conta também o debug feito dentro de subagente lançado
-no turno e o debug do turno anterior que não editou (a correção veio agora, no "pode corrigir").
-Erro de leitura libera o turno, nunca o trava."""
+inteiro atrás de outras ocorrências do bug. Conta também o debug feito dentro de subagente (o de
+segundo plano conta no turno do aviso de término) e o debug do turno anterior que não editou (a
+correção veio agora, no "pode corrigir"). Erro de leitura libera o turno, nunca o trava."""
 import json
 import os
+import re
 import sys
 
 EDICAO = {"Edit", "Write", "MultiEdit", "NotebookEdit"}
@@ -60,8 +61,12 @@ def sinais(entradas, caminho, subagente=False):
                 debug = True
             editou = editou or bloco.get("name") in EDICAO
         resultado = entrada.get("toolUseResult")
-        if caminho and not subagente and isinstance(resultado, dict) and resultado.get("agentId"):
-            debug_sub, editou_sub = sinais_do_subagente(caminho, str(resultado["agentId"]))
+        # Lançado em segundo plano ainda roda e o transcript é parcial: conta no aviso de término, que traz o id.
+        agente = resultado.get("agentId") if isinstance(resultado, dict) and resultado.get("status") != "async_launched" else None
+        aviso = re.match(r"<task-notification>\s*<task-id>([\w-]+)</task-id>", texto(entrada)) if entrada.get("type") == "user" else None
+        agente = agente or (aviso and aviso.group(1))
+        if caminho and not subagente and agente:
+            debug_sub, editou_sub = sinais_do_subagente(caminho, str(agente))
             debug, editou = debug or debug_sub, editou or editou_sub
     return debug, editou
 
@@ -80,8 +85,9 @@ def precisa_varrer(entradas, caminho=None):
     alvo = atual
     for entrada in reversed(entradas):
         if abre_turno(entrada):
-            # isMeta aqui só pode ser o feedback da varredura: fecha a janela. Fala humana passa ao turno anterior.
-            if entrada.get("isMeta") or alvo is anterior:
+            # isMeta aqui só pode ser o feedback da varredura: fecha a janela. Fala humana passa ao turno anterior;
+            # turno sem resposta do modelo (/comando, !cmd, interrupção) não gasta a janela.
+            if entrada.get("isMeta") or (alvo is anterior and any(e.get("type") == "assistant" for e in anterior)):
                 break
             alvo = anterior
             continue

@@ -117,8 +117,36 @@ def gravar(pasta, entradas, subagentes=None):
     return caminho
 
 
-def delegou(agente):
-    return [ferramenta("Agent", {"prompt": "corrige"}), resultado(toolUseResult={"agentId": agente, "status": "completed"})]
+def delegou(agente, status="completed"):
+    return [ferramenta("Agent", {"prompt": "corrige"}), resultado(toolUseResult={"agentId": agente, "status": status})]
+
+
+def aviso_de_termino(agente):
+    return humano(f"<task-notification>\n<task-id>{agente}</task-id>\n<status>completed</status>\n</task-notification>")
+
+
+def test_subagente_em_segundo_plano_que_termina_noutro_turno_conta():
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("corrige o bug"), *delegou("abc", "async_launched"), humano("e aí?"),
+                                 aviso_de_termino("abc")], {"abc": [humano("corrige"), debug(), edit()]})
+        assert varredura.precisa_varrer(varredura.ler(caminho), caminho) is True
+
+
+def test_lancamento_em_segundo_plano_nao_le_transcript_parcial():
+    with tempfile.TemporaryDirectory() as pasta:
+        caminho = gravar(pasta, [humano("corrige o bug"), *delegou("abc", "async_launched")],
+                         {"abc": [humano("corrige"), debug(), edit()]})
+        assert varredura.precisa_varrer(varredura.ler(caminho), caminho) is False
+
+
+def test_turno_sem_resposta_no_meio_nao_gasta_a_janela():
+    for meio in (humano("[Request interrupted by user for tool use]"), humano("<bash-input>git status</bash-input>")):
+        assert varredura.precisa_varrer([humano("bug"), debug(), meio, humano("pode corrigir"), edit()]) is True, meio
+
+
+def test_feedback_da_varredura_corta_a_janela_no_mesmo_turno():
+    feedback = {"type": "user", "isMeta": True, "message": {"content": "Stop hook feedback:\n" + varredura.MOTIVO}}
+    assert varredura.precisa_varrer([humano("bug"), debug(), feedback, edit()]) is False
 
 
 def test_debug_e_edicao_dentro_do_subagente_bloqueia():
