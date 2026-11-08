@@ -1,0 +1,11 @@
+{
+ "method": "POST",
+ "req_hdr": {
+  "Content-Type": "application/pdf"
+ },
+ "status": 201,
+ "headers": {
+  "raw": "content-length: 0\r\nlocation: /AAFAKE101.pdf\r\n"
+ },
+ "text": ""
+}

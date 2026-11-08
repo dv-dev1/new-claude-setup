@@ -1,0 +1,629 @@
+{
+ "corpo": {
+  "requestId": "com.linkedin.sdui.requests.jobseeker.easyapply.submit",
+  "serverRequest": {
+   "requestId": "com.linkedin.sdui.requests.jobseeker.easyapply.submit",
+   "requestedArguments": {
+    "$type": "proto.sdui.actions.requests.RequestedArguments",
+    "requestedStateKeys": [
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "ea.q::32383411364::EMAIL::email"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "ea.q::32383411356::PHONE_MOBILE::phoneCountryCode"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "ea.q::32383411356::PHONE_MOBILE::phoneNumber"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "ea.q::32383411340::LARGER_RESUME::selectedResume"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "ea.q::32383411348::UNKNOWN::value_0_0"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "ea.q::32383411332::UNKNOWN::value_0_1"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "ea.q::32383411324::UNKNOWN::value_0_2"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "auto-binding-196a4dd5-78b8-4149-850a-f113147b990a"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "auto-binding-fb1945b4-8f9c-4a5f-9182-5374301bc3d3"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "com.linkedin.sdui.impl.jobseeker.easyapply.topchoice.topChoiceMessageBinding"
+       }
+      }
+     }
+    ],
+    "payload": {
+     "jobId": "4482617482",
+     "questionFieldsList": [
+      {
+       "key": "ea.q::32383411364::EMAIL::email",
+       "namespace": "MemoryNamespace"
+      },
+      {
+       "key": "ea.q::32383411356::PHONE_MOBILE::phoneCountryCode",
+       "namespace": "MemoryNamespace"
+      },
+      {
+       "key": "ea.q::32383411356::PHONE_MOBILE::phoneNumber",
+       "namespace": "MemoryNamespace"
+      },
+      {
+       "key": "ea.q::32383411340::LARGER_RESUME::selectedResume",
+       "namespace": "MemoryNamespace"
+      },
+      {
+       "key": "ea.q::32383411348::UNKNOWN::value_0_0",
+       "namespace": "MemoryNamespace"
+      },
+      {
+       "key": "ea.q::32383411332::UNKNOWN::value_0_1",
+       "namespace": "MemoryNamespace"
+      },
+      {
+       "key": "ea.q::32383411324::UNKNOWN::value_0_2",
+       "namespace": "MemoryNamespace"
+      }
+     ],
+     "questionListFieldsList": [],
+     "questionDateFieldsList": [],
+     "followCompany": {
+      "key": "auto-binding-196a4dd5-78b8-4149-850a-f113147b990a",
+      "namespace": "MemoryNamespace"
+     },
+     "trackingCode": "FAKE==",
+     "companyName": "Agento",
+     "canonicalMemberId": "1000000001",
+     "isSubmittingBinding": {
+      "key": "easyapply.isSubmitting",
+      "namespace": "MemoryNamespace"
+     },
+     "topChoiceInfo": {
+      "isEligibleToSeeTopChoice": true,
+      "isTopChoiceMarked": {
+       "type": "com.linkedin.sdui.components.core.BindingImpl",
+       "value": {
+        "key": "auto-binding-fb1945b4-8f9c-4a5f-9182-5374301bc3d3",
+        "namespace": "MemoryNamespace"
+       }
+      },
+      "isTopChoiceCreditLimitReached": false,
+      "topChoiceMessage": {
+       "type": "com.linkedin.sdui.components.core.BindingImpl",
+       "value": {
+        "key": "com.linkedin.sdui.impl.jobseeker.easyapply.topchoice.topChoiceMessageBinding",
+        "namespace": "MemoryNamespace"
+       }
+      }
+     }
+    },
+    "requestMetadata": {
+     "$type": "proto.sdui.common.RequestMetadata"
+    }
+   },
+   "onClientRequestFailureAction": {
+    "actions": [
+     {
+      "$type": "proto.sdui.actions.core.SetState",
+      "value": {
+       "state": {
+        "key": {
+         "key": {
+          "value": {
+           "$case": "id",
+           "id": "easyapply.isSubmitting"
+          }
+         }
+        },
+        "value": {
+         "$case": "booleanValue",
+         "booleanValue": false
+        }
+       }
+      }
+     },
+     {
+      "$type": "proto.sdui.actions.core.ShowToast",
+      "value": {
+       "duration": "ToastDuration_UNKNOWN",
+       "key": "524f535b-846e-43db-b43e-d24d2aa687d2",
+       "presetToast": {
+        "category": "ToastPresetCategory_ERROR",
+        "text": {
+         "_payload": {
+          "status": "resolved_model",
+          "value": "[\"Não foi possível enviar sua candidatura. Tente novamente.\"]",
+          "reason": {
+           "_moduleLoading": null,
+           "_chunks": {},
+           "_stringDecoder": {},
+           "_closed": true,
+           "_closedReason": {},
+           "_allowPartialStream": false
+          }
+         }
+        }
+       }
+      }
+     }
+    ]
+   },
+   "isApfcEnabled": false,
+   "isStreaming": false,
+   "rumPageKey": ""
+  },
+  "states": [
+   {
+    "key": "ea.q::32383411364::EMAIL::email",
+    "namespace": "MemoryNamespace",
+    "value": "candidato@example.com",
+    "originalProtoCase": "stringValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "ea.q::32383411364::EMAIL::email"
+     }
+    }
+   },
+   {
+    "key": "ea.q::32383411356::PHONE_MOBILE::phoneCountryCode",
+    "namespace": "MemoryNamespace",
+    "value": "br",
+    "originalProtoCase": "stringValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "ea.q::32383411356::PHONE_MOBILE::phoneCountryCode"
+     }
+    }
+   },
+   {
+    "key": "ea.q::32383411356::PHONE_MOBILE::phoneNumber",
+    "namespace": "MemoryNamespace",
+    "value": "83900000000",
+    "originalProtoCase": "stringValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "ea.q::32383411356::PHONE_MOBILE::phoneNumber"
+     }
+    }
+   },
+   {
+    "key": "ea.q::32383411340::LARGER_RESUME::selectedResume",
+    "namespace": "MemoryNamespace",
+    "value": "/AAFAKE1.pdf",
+    "originalProtoCase": "stringValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "ea.q::32383411340::LARGER_RESUME::selectedResume"
+     }
+    }
+   },
+   {
+    "key": "ea.q::32383411348::UNKNOWN::value_0_0",
+    "namespace": "MemoryNamespace",
+    "value": "1",
+    "originalProtoCase": "stringValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "ea.q::32383411348::UNKNOWN::value_0_0"
+     }
+    }
+   },
+   {
+    "key": "ea.q::32383411332::UNKNOWN::value_0_1",
+    "namespace": "MemoryNamespace",
+    "value": "0",
+    "originalProtoCase": "stringValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "ea.q::32383411332::UNKNOWN::value_0_1"
+     }
+    }
+   },
+   {
+    "key": "ea.q::32383411324::UNKNOWN::value_0_2",
+    "namespace": "MemoryNamespace",
+    "value": "0",
+    "originalProtoCase": "stringValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "ea.q::32383411324::UNKNOWN::value_0_2"
+     }
+    }
+   },
+   {
+    "key": "auto-binding-196a4dd5-78b8-4149-850a-f113147b990a",
+    "namespace": "MemoryNamespace",
+    "value": true,
+    "originalProtoCase": "booleanValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "auto-binding-196a4dd5-78b8-4149-850a-f113147b990a"
+     }
+    }
+   },
+   {
+    "key": "auto-binding-fb1945b4-8f9c-4a5f-9182-5374301bc3d3",
+    "namespace": "MemoryNamespace",
+    "value": false,
+    "originalProtoCase": "booleanValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "auto-binding-fb1945b4-8f9c-4a5f-9182-5374301bc3d3"
+     }
+    }
+   },
+   {
+    "key": "com.linkedin.sdui.impl.jobseeker.easyapply.topchoice.topChoiceMessageBinding",
+    "namespace": "MemoryNamespace",
+    "value": "",
+    "originalProtoCase": "stringValue",
+    "protoKey": {
+     "$type": "proto.sdui.Key",
+     "value": {
+      "$case": "id",
+      "id": "com.linkedin.sdui.impl.jobseeker.easyapply.topchoice.topChoiceMessageBinding"
+     }
+    }
+   }
+  ],
+  "requestedArguments": {
+   "$type": "proto.sdui.actions.requests.RequestedArguments",
+   "requestedStateKeys": [
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411364::EMAIL::email"
+      }
+     }
+    },
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411356::PHONE_MOBILE::phoneCountryCode"
+      }
+     }
+    },
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411356::PHONE_MOBILE::phoneNumber"
+      }
+     }
+    },
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411340::LARGER_RESUME::selectedResume"
+      }
+     }
+    },
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411348::UNKNOWN::value_0_0"
+      }
+     }
+    },
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411332::UNKNOWN::value_0_1"
+      }
+     }
+    },
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411324::UNKNOWN::value_0_2"
+      }
+     }
+    },
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "auto-binding-196a4dd5-78b8-4149-850a-f113147b990a"
+      }
+     }
+    },
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "auto-binding-fb1945b4-8f9c-4a5f-9182-5374301bc3d3"
+      }
+     }
+    },
+    {
+     "key": {
+      "value": {
+       "$case": "id",
+       "id": "com.linkedin.sdui.impl.jobseeker.easyapply.topchoice.topChoiceMessageBinding"
+      }
+     }
+    }
+   ],
+   "payload": {
+    "jobId": "4482617482",
+    "questionFieldsList": [
+     {
+      "key": "ea.q::32383411364::EMAIL::email",
+      "namespace": "MemoryNamespace"
+     },
+     {
+      "key": "ea.q::32383411356::PHONE_MOBILE::phoneCountryCode",
+      "namespace": "MemoryNamespace"
+     },
+     {
+      "key": "ea.q::32383411356::PHONE_MOBILE::phoneNumber",
+      "namespace": "MemoryNamespace"
+     },
+     {
+      "key": "ea.q::32383411340::LARGER_RESUME::selectedResume",
+      "namespace": "MemoryNamespace"
+     },
+     {
+      "key": "ea.q::32383411348::UNKNOWN::value_0_0",
+      "namespace": "MemoryNamespace"
+     },
+     {
+      "key": "ea.q::32383411332::UNKNOWN::value_0_1",
+      "namespace": "MemoryNamespace"
+     },
+     {
+      "key": "ea.q::32383411324::UNKNOWN::value_0_2",
+      "namespace": "MemoryNamespace"
+     }
+    ],
+    "questionListFieldsList": [],
+    "questionDateFieldsList": [],
+    "followCompany": {
+     "key": "auto-binding-196a4dd5-78b8-4149-850a-f113147b990a",
+     "namespace": "MemoryNamespace"
+    },
+    "trackingCode": "FAKE==",
+    "companyName": "Agento",
+    "canonicalMemberId": "1000000001",
+    "isSubmittingBinding": {
+     "key": "easyapply.isSubmitting",
+     "namespace": "MemoryNamespace"
+    },
+    "topChoiceInfo": {
+     "isEligibleToSeeTopChoice": true,
+     "isTopChoiceMarked": {
+      "type": "com.linkedin.sdui.components.core.BindingImpl",
+      "value": {
+       "key": "auto-binding-fb1945b4-8f9c-4a5f-9182-5374301bc3d3",
+       "namespace": "MemoryNamespace"
+      }
+     },
+     "isTopChoiceCreditLimitReached": false,
+     "topChoiceMessage": {
+      "type": "com.linkedin.sdui.components.core.BindingImpl",
+      "value": {
+       "key": "com.linkedin.sdui.impl.jobseeker.easyapply.topchoice.topChoiceMessageBinding",
+       "namespace": "MemoryNamespace"
+      }
+     }
+    }
+   },
+   "requestMetadata": {
+    "$type": "proto.sdui.common.RequestMetadata"
+   },
+   "states": [
+    {
+     "key": "ea.q::32383411364::EMAIL::email",
+     "namespace": "MemoryNamespace",
+     "value": "candidato@example.com",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411364::EMAIL::email"
+      }
+     }
+    },
+    {
+     "key": "ea.q::32383411356::PHONE_MOBILE::phoneCountryCode",
+     "namespace": "MemoryNamespace",
+     "value": "br",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411356::PHONE_MOBILE::phoneCountryCode"
+      }
+     }
+    },
+    {
+     "key": "ea.q::32383411356::PHONE_MOBILE::phoneNumber",
+     "namespace": "MemoryNamespace",
+     "value": "83900000000",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411356::PHONE_MOBILE::phoneNumber"
+      }
+     }
+    },
+    {
+     "key": "ea.q::32383411340::LARGER_RESUME::selectedResume",
+     "namespace": "MemoryNamespace",
+     "value": "/AAFAKE1.pdf",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411340::LARGER_RESUME::selectedResume"
+      }
+     }
+    },
+    {
+     "key": "ea.q::32383411348::UNKNOWN::value_0_0",
+     "namespace": "MemoryNamespace",
+     "value": "1",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411348::UNKNOWN::value_0_0"
+      }
+     }
+    },
+    {
+     "key": "ea.q::32383411332::UNKNOWN::value_0_1",
+     "namespace": "MemoryNamespace",
+     "value": "0",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411332::UNKNOWN::value_0_1"
+      }
+     }
+    },
+    {
+     "key": "ea.q::32383411324::UNKNOWN::value_0_2",
+     "namespace": "MemoryNamespace",
+     "value": "0",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "ea.q::32383411324::UNKNOWN::value_0_2"
+      }
+     }
+    },
+    {
+     "key": "auto-binding-196a4dd5-78b8-4149-850a-f113147b990a",
+     "namespace": "MemoryNamespace",
+     "value": true,
+     "originalProtoCase": "booleanValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "auto-binding-196a4dd5-78b8-4149-850a-f113147b990a"
+      }
+     }
+    },
+    {
+     "key": "auto-binding-fb1945b4-8f9c-4a5f-9182-5374301bc3d3",
+     "namespace": "MemoryNamespace",
+     "value": false,
+     "originalProtoCase": "booleanValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "auto-binding-fb1945b4-8f9c-4a5f-9182-5374301bc3d3"
+      }
+     }
+    },
+    {
+     "key": "com.linkedin.sdui.impl.jobseeker.easyapply.topchoice.topChoiceMessageBinding",
+     "namespace": "MemoryNamespace",
+     "value": "",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "com.linkedin.sdui.impl.jobseeker.easyapply.topchoice.topChoiceMessageBinding"
+      }
+     }
+    }
+   ],
+   "screenId": "com.linkedin.sdui.flagshipnav.jobs.easyapply.EasyApply",
+   "knownTemplateIds": []
+  }
+ },
+ "resposta": "1:[]\n0:{\"states\":[{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"easyapply.shouldOverrideBack\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":true}}],\"response\":{\"$type\":\"proto.sdui.responses.ServerRequestResponse\",\"errors\":[],\"isRetryable\":false,\"completionAction\":{\"actions\":[{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"easyapply.isSubmitting\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":false}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"jdpApplyState_4482617482\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"Applied\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"eaHasDraft_4482617482\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":false}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobCardFrameworkImplFooterState_4482617482\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"Applied\"}},\"isOptimistic\":true}},{\"$type\":\"proto.sdui.actions.core.CommitStates\",\"value\":{\"keys\":[{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobCardFrameworkImplFooterState_4482617482\"}}}]}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"easyapply.shouldOverrideBack\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":false}}}},{\"$type\":\"proto.sdui.actions.core.Navigate\",\"value\":{\"content\":{\"$case\":\"url\",\"url\":{\"$type\":\"proto.sdui.actions.core.NavigateToUrl\",\"openInNewTab\":false,\"interop\":true,\"clearBackStack\":false,\"urlValue\":{\"$case\":\"url\",\"url\":\"https://www.linkedin.com/jobs/view/4482617482/post-apply/?postApplyJobId=4482617482&companyName=Agento&isOffsiteApply=false&screenContext=POST_APPLY_MODAL_JDP\"}}}}}],\"sduiTrackingProvenance\":{\"version\":\"0.2.2058\"}}},\"frontendContext\":{\"$type\":\"proto.frontendinfra.ResponseContext\",\"templates\":[],\"DebugTemplates\":[],\"sharedStrings\":[],\"syncedFlags\":[],\"sduiVersion\":\"0.2.2058\",\"encryptedServerIdentifier\":\"\",\"sharedTemplates\":\"$Q1\",\"requiredTemplateIds\":[]},\"treeId\":\"FAKE==\",\"sduiTrackingProvenance\":\"$0:response:completionAction:sduiTrackingProvenance\"}\n"
+}

@@ -1,0 +1,776 @@
+<title>Empório por dentro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: Grafite. Página escura de propósito; linhas finas, cor só no sim/não e onde entra a IA.
+   Aba por projeto: resumo, fluxograma único (Negócio / Código), tabelas, fichas recolhidas. */
+:root {
+  color-scheme: dark;
+  --bg: #0b0b0c; --surface: #111113; --ink: #ededee; --muted: #8a8a90; --line: #232326; --line-2: #34343a; --code-bg: #17171a;
+  --q: #6a6a72; --llm: #a99bff; --yes: #7fd4a0; --no: #f08c80; --accent: #a99bff; --pin: #ededee; --pin-ink: #0b0b0c;
+  --f-display: "Geist", system-ui, sans-serif;
+  --f-body: "Geist", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 980px; margin: 0 auto; }
+header.top { padding-block: 40px 18px; display: grid; gap: 10px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; letter-spacing: -0.015em; }
+h1 { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 600; }
+h2 { font-size: 1.45rem; font-weight: 600; }
+h3 { font-size: 1.08rem; font-weight: 600; }
+p { margin: 0; }
+.lede { color: var(--muted); max-width: 64ch; }
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); display: flex; gap: 4px; flex-wrap: wrap; padding-block: 12px; border-bottom: 1px solid var(--line); }
+nav.tabs button { font: 500 0.92rem var(--f-body); color: var(--muted); background: transparent; cursor: pointer; border: 0; border-radius: 999px; padding: 6px 14px; }
+nav.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.view { display: grid; gap: 32px; padding-top: 28px; }
+.block { display: grid; gap: 12px; min-width: 0; }
+.label { font: 500 0.78rem var(--f-body); letter-spacing: 0.02em; color: var(--muted); }
+.badge { font: 500 0.75rem var(--f-mono); padding: 2px 8px; border-radius: 4px; width: fit-content; border: 1px solid var(--line-2); color: var(--muted); }
+code { font-family: var(--f-mono); font-size: 0.85em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+.hint { color: var(--muted); font-size: 0.9rem; }
+.pitch { padding: 14px 16px; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; }
+.pitch .label { display: block; margin-bottom: 4px; }
+/* Fluxo sequencial das fichas */
+.flow { list-style: none; margin: 0; padding: 16px; counter-reset: passo; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; display: grid; }
+.flow > li { position: relative; display: grid; grid-template-columns: 1.8rem minmax(0, 1fr); gap: 12px; padding-bottom: 16px; }
+.flow > li:last-child { padding-bottom: 0; }
+.flow > li::before { counter-increment: passo; content: counter(passo); display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; border: 1px solid var(--line-2); font: 500 0.78rem var(--f-mono); color: var(--muted); background: var(--surface); position: relative; z-index: 1; }
+.flow > li::after { content: ""; position: absolute; left: calc(0.9rem - 0.5px); top: 1.8rem; bottom: 0; width: 1px; background: var(--line-2); }
+.flow > li:last-child::after { display: none; }
+.flow > li.phase { grid-template-columns: minmax(0, 1fr); padding-bottom: 12px; }
+.flow > li.phase::before, .flow > li.phase::after { display: none; }
+.flow > li.phase span { font: 500 0.78rem var(--f-body); color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 4px; display: block; }
+.st { display: grid; gap: 4px; min-width: 0; padding-top: 2px; }
+.st .row { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+.st .what { font-weight: 500; }
+.st .where { font: 0.76rem var(--f-mono); color: var(--muted); }
+.st .why { color: var(--muted); font-size: 0.92rem; }
+.who { font: 500 0.7rem var(--f-mono); padding: 1px 7px; border-radius: 4px; border: 1px solid var(--line-2); color: var(--muted); }
+.w-llm { color: var(--llm); border-color: var(--llm); }
+.outs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 4px; }
+@media (max-width: 560px) { .outs { grid-template-columns: minmax(0, 1fr); } }
+.out { border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; font-size: 0.9rem; }
+.out b { font: 500 0.72rem var(--f-mono); margin-right: 6px; }
+.out.yes b { color: var(--yes); } .out.no b { color: var(--no); }
+.loop { font: 500 0.78rem var(--f-mono); color: var(--muted); }
+/* Tabelas */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 500 0.75rem var(--f-body); color: var(--muted); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td a { color: var(--ink); font: 500 0.8rem var(--f-mono); }
+/* Fichas */
+details.ficha { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+details.ficha > summary { list-style: none; cursor: pointer; padding: 14px 16px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; }
+details.ficha > summary::-webkit-details-marker { display: none; }
+summary .id { font: 500 0.8rem var(--f-mono); color: var(--muted); padding-top: 3px; }
+summary .t { display: grid; gap: 2px; }
+summary .terms { font: 0.76rem var(--f-mono); color: var(--muted); }
+summary .one { font-size: 0.93rem; color: var(--muted); }
+summary .chev { font: 500 1.1rem var(--f-mono); color: var(--muted); transition: transform 0.15s; }
+details[open] > summary .chev { transform: rotate(90deg); }
+.body { display: grid; gap: 16px; padding: 16px 16px 18px; border-top: 1px solid var(--line); }
+.concept { max-width: 70ch; }
+.code-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 760px) { .code-grid { grid-template-columns: minmax(0, 1fr); } }
+.code { min-width: 0; display: grid; gap: 6px; }
+.file { font: 500 0.76rem var(--f-mono); color: var(--muted); }
+pre.src { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font: 0.78rem/1.6 var(--f-mono); color: var(--ink); }
+pre.src .c { color: var(--muted); font-style: italic; }
+.pin { display: inline-grid; place-items: center; width: 1.35em; height: 1.35em; border-radius: 50%; background: var(--pin); color: var(--pin-ink); font: 600 0.7rem var(--f-mono); vertical-align: 1px; margin-left: 6px; }
+ol.notes { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; min-width: 0; }
+ol.notes li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; font-size: 0.92rem; }
+ol.notes li .pin { margin: 2px 0 0; }
+.decision { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+@media (max-width: 760px) { .decision { grid-template-columns: minmax(0, 1fr); } }
+.decision > div { padding: 10px 14px; display: grid; gap: 4px; align-content: start; font-size: 0.92rem; }
+.decision > div + div { border-left: 1px solid var(--line); }
+@media (max-width: 760px) { .decision > div + div { border-left: 0; border-top: 1px solid var(--line); } }
+.decision .k { font: 500 0.75rem var(--f-body); color: var(--muted); }
+.say { padding: 10px 14px; border: 1px solid var(--line); font-size: 0.94rem; border-radius: 8px; }
+.say b { font: 500 0.75rem var(--f-body); color: var(--muted); display: block; margin-bottom: 2px; }
+.fichas { display: grid; gap: 10px; }
+.foot { color: var(--muted); font-size: 0.85rem; padding-top: 28px; }
+/* Fluxograma: caminho principal desce, desvio sai pelo lado; chave troca negócio e código */
+.fx { display: grid; gap: 14px; min-width: 0; }
+.fx-bar { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.seg { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: #161618; }
+.seg button, .fx-caso { font: 500 0.85rem var(--f-body); border: 0; border-radius: 999px; padding: 5px 13px; cursor: pointer; background: transparent; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.fx-caso { border: 1px solid var(--line-2); }
+.fx-caso[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); }
+.fx-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+.fx-in { padding: 24px; min-width: 700px; display: grid; justify-content: start; }
+.fx-lane { font: 500 0.82rem var(--f-body); color: var(--muted); padding: 2px 0 14px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.fx-lane:not(:first-child) { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+.fx-lane b { color: var(--ink); font-weight: 500; }
+.fx-row { display: grid; grid-template-columns: 300px auto; align-items: center; }
+.fx-sides { display: grid; gap: 8px; }
+.fx-side { display: grid; grid-template-columns: 104px 236px; align-items: center; }
+.nd { border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 14px; background: transparent; display: flex; gap: 12px; align-items: center; min-height: 54px;
+  width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; transition: border-color .15s, opacity .15s; }
+.nd:hover { border-color: var(--muted); }
+.nd[aria-expanded="true"] { border-color: var(--ink); }
+.nd .mk { flex: none; width: 16px; text-align: center; color: var(--muted); font: 500 13px var(--f-body); }
+.nd .tx { min-width: 0; display: grid; gap: 1px; }
+.nd .tt { font: 500 15px var(--f-body); letter-spacing: -0.005em; overflow-wrap: anywhere; }
+.nd small { font: 400 12.5px var(--f-body); color: var(--muted); overflow-wrap: anywhere; }
+.nd .vai { font: 400 12px var(--f-body); color: var(--muted); }
+.nd .cn { display: none; font: 400 12.5px var(--f-body); color: var(--ink); border-top: 1px solid var(--line); margin-top: 6px; padding-top: 6px; }
+.nd.q { border-color: var(--q); } .nd.q .mk { color: var(--ink); }
+.nd.end { border-style: dashed; }
+.nd.llm { border-color: var(--llm); } .nd.llm .mk { color: var(--llm); }
+.fx.cod .nd .tt { font: 500 13.5px var(--f-mono); }
+.fx.andando .nd:not(.on) { opacity: .35; }
+.fx.andando .nd.on .cn { display: block; }
+.nd .num { font: 500 11px var(--f-mono); color: var(--bg); background: var(--ink); border-radius: 999px; padding: 0 6px; margin-right: 6px; }
+.ar { display: flex; align-items: center; gap: 6px; font: 500 12px var(--f-body); padding: 0 6px; }
+.ar::before { content: ""; flex: 1; border-top: 1px solid var(--line-2); }
+.ar::after { content: ""; border: 4px solid transparent; border-left: 6px solid var(--line-2); margin-right: -6px; }
+.dn { width: 300px; display: flex; flex-direction: column; align-items: center; padding: 4px 0; font: 500 12px var(--f-body); }
+.dn i { width: 0; height: 12px; border-left: 1px solid var(--line-2); }
+.dn::after { content: ""; border: 4px solid transparent; border-top: 6px solid var(--line-2); margin-bottom: -4px; }
+.yes { color: var(--yes); } .no { color: var(--no); } .lbl { color: var(--muted); }
+.det { margin: 10px 0 6px; max-width: 700px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); padding: 14px 16px; display: grid; gap: 10px; }
+.det dl { margin: 0; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 8px 14px; }
+.det dt { font: 500 0.75rem var(--f-body); color: var(--muted); padding-top: 2px; }
+.det dd { margin: 0; font-size: 0.93rem; min-width: 0; }
+.det .where { font: 0.78rem var(--f-mono); color: var(--muted); }
+.det pre.src { margin-top: 2px; }
+.det a { color: var(--ink); font: 500 0.82rem var(--f-mono); }
+@media (prefers-reduced-motion: reduce) { .nd, summary .chev { transition: none; } }
+dfn.termo { font-style: normal; border-bottom: 1px dotted var(--muted); cursor: help; position: relative; }
+.dica { position: fixed; z-index: 30; max-width: min(280px, calc(100vw - 32px)); padding: 6px 9px; border-radius: 6px;
+  background: var(--ink); color: var(--bg); font: 400 0.8rem/1.4 var(--f-body); pointer-events: none; }
+</style>
+
+
+<div class="wrap">
+  <header class="top">
+    <span class="badge b-both">Cases AI Engineer · júnior</span>
+    <h1>Empório por dentro</h1>
+    <p class="lede">Por aba: o fluxo do negócio com o código de cada passo, e uma ficha por conceito.</p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Projetos">
+    <button role="tab" id="tab-padrao" aria-controls="padrao" aria-selected="true">Padrão comum</button>
+    <button role="tab" id="tab-emporio" aria-controls="emporio" aria-selected="false">Empório · Artefact</button>
+  </nav>
+
+  <!-- ======================= PADRÃO ======================= -->
+  <section class="view" id="padrao" role="tabpanel" aria-labelledby="tab-padrao">
+    <div class="block">
+      <span class="badge b-both">Os dois projetos</span>
+      <h2>LLM na borda, código determinístico no core</h2>
+      <p class="concept">O modelo só faz o que é probabilístico: interpretar texto. Tudo que tem consequência (preço, autorização, estado) sai de código puro com teste. A diferença está no tipo de sistema: a Empório é um <strong>agente conversacional</strong>, em que o LLM conduz a conversa, e a Vitalis é um <strong>workflow assíncrono</strong>, em que o LLM é um detalhe opcional.</p>
+    </div>
+
+    <div class="block">
+      <span class="label">O esqueleto que se repete</span>
+      <ol class="flow">
+        <li><div class="st"><div class="row"><span class="who w-ext">entrada</span><span class="what">Chega texto livre</span></div><p class="why">Empório: pergunta do cliente. Vitalis: nome do exame escrito pelo médico.</p></div></li>
+        <li><div class="st"><div class="row"><span class="who w-llm">LLM</span><span class="what">Interpreta e escolhe de uma lista fechada</span></div><p class="why">Empório: qual das 5 tools chamar. Vitalis: qual código do catálogo sugerir.</p></div></li>
+        <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Valida o que o LLM devolveu</span></div><p class="why">Tipo do argumento, nome da tool, código dentro do catálogo.</p></div></li>
+        <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Função pura decide</span></div><p class="why">Parcelas e desconto PIX; periodicidade e necessidade de autorização.</p></div></li>
+        <li><div class="st"><div class="row"><span class="who w-db">SQLite</span><span class="what">Grava o estado</span></div><p class="why">Histórico da conversa; solicitação, exames, eventos e queue.</p></div></li>
+        <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Resolveu?</span></div>
+          <div class="outs"><div class="out yes"><b>sim</b>resposta ou estado final</div><div class="out no"><b>não</b><span class="who w-human">pessoa</span> assume, com a tarefa escrita</div></div></div></li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <span class="label">Mesmo conceito, onde está em cada um</span>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Conceito</th><th>Empório</th><th>Vitalis</th></tr></thead>
+        <tbody>
+          <tr><td>Deterministic core</td><td><code>rules.py:48</code></td><td><code>motor.py:176</code></td></tr>
+          <tr><td>Input validation na borda</td><td><code>tools.py:39</code></td><td><code>motor.py:110</code></td></tr>
+          <tr><td>Retry só em erro transient</td><td><code>agent.py:108</code></td><td><code>operadora.py:118</code></td></tr>
+          <tr><td>Output do LLM em lista fechada</td><td><code>tools.py:471</code></td><td><code>sugestao.py:33</code></td></tr>
+          <tr><td>Estado em SQLite</td><td><code>memory.py:52</code></td><td><code>banco.py:57</code></td></tr>
+          <tr><td>Dependency injection nos testes</td><td><code>agent.py:36</code></td><td><code>conftest.py:198</code></td></tr>
+          <tr><td>Human in the loop</td><td><code>agent.py:87</code></td><td><code>motor.py:287</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <p class="pitch"><span class="label">Em uma frase</span>O modelo interpreta e escreve; o código decide tudo o que tem consequência. Cada regra tem teste e dá o mesmo resultado toda vez, então o LLM pode errar sem que o erro chegue ao cliente como um número.</p>
+  </section>
+
+  <!-- ======================= EMPÓRIO ======================= -->
+  <section class="view" id="emporio" role="tabpanel" aria-labelledby="tab-emporio" hidden>
+    <div class="block">
+      <span class="badge b-emporio">Artefact · emporio-da-musica-agent</span>
+      <h2>Agente de atendimento com tool calling e RAG</h2>
+      <p class="pitch"><span class="label">Em 30 segundos</span>É um agente em pt-BR para uma loja de instrumentos. O LLM (<code>openai/gpt-oss-120b</code> na Groq) não escreve SQL: escolhe entre 5 tools tipadas que rodam queries fixas no SQLite ou uma busca BM25 no manual da loja. Preço, parcelas e prazos saem de funções Python com teste, e a tool devolve o texto pronto para o modelo copiar.</p>
+    </div>
+
+    <div class="block">
+      <span class="label">Fluxo: negócio e código</span>
+      <p class="hint">Cada caixa é uma regra ou um passo. A chave troca o rótulo pelo código que o aplica; o clique abre o porquê embaixo.</p>
+      <div class="fx" data-fluxo="emporio"></div>
+    </div>
+
+    <div class="block">
+      <span class="label">Mapa dos arquivos</span>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Arquivo</th><th>Papel</th></tr></thead>
+        <tbody>
+          <tr><td><code>agent.py</code></td><td>Agent loop, retry da API</td></tr>
+          <tr><td><code>tools.py</code></td><td>5 tools, schemas, dispatcher <code>call</code></td></tr>
+          <tr><td><code>rules.py</code></td><td>Preço, PIX, parcelas, prazos: funções puras</td></tr>
+          <tr><td><code>policies.py</code> · <code>text.py</code></td><td>PDF em seções, índice BM25, stemming</td></tr>
+          <tr><td><code>memory.py</code></td><td>Histórico por <code>session_id</code> no SQLite</td></tr>
+          <tr><td><code>prompts.py</code></td><td><code>SYSTEM_PROMPT</code> e <code>TURN_REMINDER</code></td></tr>
+          <tr><td><code>etl.py</code></td><td>CSVs viram <code>emporio.db</code> e a view <code>catalog</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="block">
+      <span class="label">Stack e limites</span>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tema</th><th>O que é</th><th>Fonte</th></tr></thead>
+        <tbody>
+          <tr><td>Modelo</td><td><code>openai/gpt-oss-120b</code> na Groq</td><td><code>config.py:15</code></td></tr>
+          <tr><td>Por que Groq</td><td>Free tier, tool calling, baixa latência</td><td>README</td></tr>
+          <tr><td>Dados do cliente</td><td><code>get_order</code> exige telefone ou e-mail</td><td><code>tools.py:259</code></td></tr>
+          <tr><td>Interface</td><td>CLI e Streamlit sobre o mesmo <code>Agent</code></td><td><code>agent.py:50</code></td></tr>
+          <tr><td>Produção</td><td>Tools no sistema real, com cache; FastAPI</td><td>README</td></tr>
+          <tr><td>Limites</td><td>Sem eval, sem handoff, BM25 sem sinônimo</td><td>README</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="block">
+      <span class="label">Fichas</span>
+      <div class="fichas">
+
+        <details class="ficha" id="e1">
+          <summary><span class="id">E1</span><span class="t"><h3>Agent loop com tool calling</h3><span class="terms">tool calling · function calling · agent loop</span><span class="one">O modelo só pede a função; o seu código executa.</span></span><span class="chev">›</span></summary>
+          <div class="body">
+            <p class="concept">O LLM <strong>nunca executa nada</strong>. Ele devolve um JSON com o nome da função e os argumentos (<code>finish_reason: "tool_calls"</code>). O código roda a função, devolve o resultado como mensagem <code>role: "tool"</code> e chama o modelo de novo. O "agente" é esse <code>for</code>.</p>
+            <ol class="flow">
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Envia messages + schemas das tools</span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-llm">LLM</span><span class="what">Devolve <code>get_product</code> com <code>arguments</code> em string JSON</span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Decodifica, roda a função, anexa o resultado com o <code>tool_call_id</code></span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-llm">LLM</span><span class="what">Lê o resultado e responde em texto</span></div><p class="loop">↻ ou pede outra tool, até 6 voltas</p></div></li>
+            </ol>
+            <div class="code-grid">
+              <div class="code"><span class="file">src/emporio/agent.py:65</span>
+<pre class="src">for _ in range(config.MAX_TOOL_ROUNDS):<span class="pin">1</span>
+    choice = self._complete(conversation)
+    if choice is None:
+        break
+    if not choice.tool_calls:<span class="pin">2</span>
+        answer = (choice.content or "").strip()
+        ...
+        return Reply(answer, used)
+    conversation.append(choice.model_dump(exclude_none=True))
+    for call in choice.tool_calls:
+        arguments = _decode(call.function.arguments)<span class="pin">3</span>
+        result = tools.call(call.function.name, arguments)
+        conversation.append({"role": "tool",
+            "tool_call_id": call.id, ...})<span class="pin">4</span></pre></div>
+              <ol class="notes">
+                <li><span class="pin">1</span><span>Teto de 6 voltas (<code>config.py:17</code>): evita loop infinito e limita o custo.</span></li>
+                <li><span class="pin">2</span><span>Sem <code>tool_calls</code>, o texto é a resposta final.</span></li>
+                <li><span class="pin">3</span><span><code>arguments</code> chega como <strong>string</strong>, e o modelo pode errar o formato.</span></li>
+                <li><span class="pin">4</span><span>O <code>tool_call_id</code> liga a resposta ao pedido certo.</span></li>
+              </ol>
+            </div>
+            <div class="decision">
+              <div><span class="k">Escolha</span>5 tools tipadas, SQL fixo</div>
+              <div><span class="k">Recusado</span>SQL agent livre</div>
+              <div><span class="k">Por quê</span>"A free-form SQL agent makes a wrong number a prompt-engineering problem." Com tool tipada, vira problema de código, que tem teste. O custo é que uma pergunta sem tool fica sem resposta.</div>
+            </div>
+            <p class="say"><b>Para explicar</b>O modelo só devolve um JSON pedindo uma função. Meu código executa, devolve o resultado como mensagem de tool e chama de novo, até ele responder em texto, com teto de seis voltas.</p>
+          </div>
+        </details>
+
+        <details class="ficha" id="e2">
+          <summary><span class="id">E2</span><span class="t"><h3>Context window: a API não tem memória</h3><span class="terms">stateless API · context window · recency bias</span><span class="one">A memória é a lista que você reenvia em toda chamada.</span></span><span class="chev">›</span></summary>
+          <div class="body">
+            <p class="concept">Cada chamada ao LLM é independente. O histórico é reenviado inteiro em toda request, e cada token custa dinheiro e atenção. A <strong>posição</strong> também importa: o modelo pesa mais o que leu por último.</p>
+            <ol class="flow">
+              <li class="phase"><span>Montagem, em toda chamada</span></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what"><code>SYSTEM_PROMPT</code>: persona e regras</span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-db">SQLite</span><span class="what">Últimas 12 trocas, só user e assistant</span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what"><code>TURN_REMINDER</code>: as regras de novo</span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Mensagem atual do cliente</span></div></div></li>
+              <li class="phase"><span>Depois da resposta</span></li>
+              <li><div class="st"><div class="row"><span class="who w-db">SQLite</span><span class="what">Grava a pergunta e a resposta, nunca o JSON das tools</span><span class="where">agent.py:71</span></div></div></li>
+            </ol>
+            <div class="code-grid">
+              <div class="code"><span class="file">src/emporio/agent.py:57 · memory.py:52</span>
+<pre class="src">conversation = [
+    {"role": "system", "content": prompts.SYSTEM_PROMPT},
+    *self.history.messages(),<span class="pin">1</span>
+    {"role": "system", "content": prompts.TURN_REMINDER},<span class="pin">2</span>
+    {"role": "user", "content": message},
+]
+
+"SELECT role, content FROM messages WHERE session_id = ? "
+"ORDER BY id DESC LIMIT ?", (self.session_id, self.max_turns * 2)<span class="pin">3</span></pre></div>
+              <ol class="notes">
+                <li><span class="pin">1</span><span>O histórico sai do SQLite a cada chamada.</span></li>
+                <li><span class="pin">2</span><span>Com a regra só no topo, depois de duas trocas amigáveis o agente respondeu a capital da Mongólia (<code>prompts.py:69</code>).</span></li>
+                <li><span class="pin">3</span><span>Sliding window de 12 trocas (<code>config.py:18</code>): o custo por chamada para de crescer.</span></li>
+              </ol>
+            </div>
+            <div class="decision">
+              <div><span class="k">Escolha</span>Não guardar resultado de tool</div>
+              <div><span class="k">Recusado</span>Guardar a conversa inteira</div>
+              <div><span class="k">Por quê</span>Preço e estoque mudam. Um JSON velho reenviado três turnos depois vira preço errado dito com confiança, e o modelo deve consultar de novo.</div>
+            </div>
+            <p class="say"><b>Para explicar</b>A API é stateless: reenvio a conversa em toda chamada, cortada em doze trocas e sem resultado de tool. E repito as regras logo antes da mensagem, porque o modelo pesa mais o que leu por último.</p>
+          </div>
+        </details>
+
+        <details class="ficha" id="e3">
+          <summary><span class="id">E3</span><span class="t"><h3>RAG com BM25</h3><span class="terms">RAG · lexical search · chunking · stemming</span><span class="one">Busca a seção do manual por palavras em comum.</span></span><span class="chev">›</span></summary>
+          <div class="body">
+            <p class="concept"><strong>RAG</strong>: buscar o trecho relevante e colocá-lo no contexto antes de o LLM responder. Aqui o retrieval é <strong>BM25</strong>, ranking léxico: soma as palavras em comum, dá mais peso à palavra rara no corpus (IDF), satura a repetição e penaliza chunk longo. Ele não entende sentido.</p>
+            <ol class="flow">
+              <li class="phase"><span>Uma vez, ao carregar</span></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Extrai o PDF de 8 páginas</span></div><p class="why">pypdf em modo <code>layout</code>; o modo padrão quebra uma palavra por linha.</p></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Chunking: uma seção numerada por chunk</span></div><p class="why">Só aceita título que continua a numeração.</p></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Stemming: minúscula, sem stopword, corta em 5 letras</span><span class="where">text.py:42</span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Monta o índice <code>BM25Okapi</code></span><span class="where">policies.py:107</span></div></div></li>
+              <li class="phase"><span>A cada pergunta: "me arrependi da compra"</span></li>
+              <li><div class="st"><div class="row"><span class="who w-llm">LLM</span><span class="what">Chama a tool <code>search_policies</code></span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Mesmo stemming na pergunta: <code>arrep</code>, <code>compr</code></span></div><p class="why">"arrependi" e "arrependimento" viram o mesmo token.</p></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Score de cada seção, devolve as 3 melhores</span><span class="where">tools.py:327</span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-llm">LLM</span><span class="what">Responde a partir do texto da seção</span></div></div></li>
+            </ol>
+            <div class="code-grid">
+              <div class="code"><span class="file">src/emporio/policies.py:104 · text.py:42</span>
+<pre class="src">class PolicyIndex:
+    def __init__(self, sections):
+        self._bm25 = BM25Okapi(<span class="pin">1</span>
+            [stem(section.indexed_text) for section in sections])
+
+    def search(self, question: str, limit: int = 3):
+        scores = self._bm25.get_scores(stem(question))<span class="pin">2</span>
+        ...
+
+return [word[:5] for word in words<span class="pin">3</span>
+        if word not in STOPWORDS and len(word) &gt; 1]</pre></div>
+              <ol class="notes">
+                <li><span class="pin">1</span><span>Índice em memória, sem vector store nem serviço de embedding.</span></li>
+                <li><span class="pin">2</span><span>A pergunta passa pelo <strong>mesmo</strong> pré-processamento do índice; senão os tokens não casam.</span></li>
+                <li><span class="pin">3</span><span>Stemmer tosco de prefixo: resolve flexão, não sinônimo.</span></li>
+              </ol>
+            </div>
+            <div class="decision">
+              <div><span class="k">Escolha</span>BM25 por seção</div>
+              <div><span class="k">Recusado</span>Embeddings + vector store</div>
+              <div><span class="k">Por quê</span>8 páginas, 1 documento, e dá para ver qual seção casou. Trocaria com corpus maior, vários documentos ou vocabulário diferente; o próximo passo seria hybrid search. Limite: "devolver" não casa com "arrependimento".</div>
+            </div>
+            <p class="say"><b>Para explicar</b>O manual já vem em seções numeradas, então cada seção é um chunk. Uso BM25, busca por palavra, com stemming de cinco letras para casar flexões. Para oito páginas, embedding seria mais infraestrutura e menos transparência.</p>
+          </div>
+        </details>
+
+        <details class="ficha" id="e4">
+          <summary><span class="id">E4</span><span class="t"><h3>O código decide o número</h3><span class="terms">deterministic core · pure functions · grounding</span><span class="one">Regra de dinheiro é função pura; o LLM só copia.</span></span><span class="chev">›</span></summary>
+          <div class="body">
+            <p class="concept">Toda regra de preço é uma <strong>pure function</strong> em <code>rules.py</code>: mesma entrada, mesma saída, sem I/O, com teste. A tool já devolve o texto formatado (<code>diga_assim</code>) para o modelo copiar, em vez de converter um float sozinho.</p>
+            <ol class="flow">
+              <li><div class="st"><div class="row"><span class="who w-db">SQLite</span><span class="what">View <code>catalog</code> resolve a promoção ativa uma vez</span><span class="where">etl.py:83</span></div><p class="why">Nada adiante consegue somar dois descontos.</p></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what"><code>rules.py</code> calcula PIX e parcelas</span><span class="where">rules.py:48</span></div><p class="why">R$ 599,90: 6 × 99,98 passa do piso de R$ 80; 7 × 85,70 não chega a R$ 100.</p></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what"><code>_brl</code> formata no padrão brasileiro</span><span class="where">tools.py:68</span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-llm">LLM</span><span class="what">Copia "6x de R$ 99,98" do <code>diga_assim</code></span><span class="where">tools.py:113</span></div></div></li>
+            </ol>
+            <div class="code-grid">
+              <div class="code"><span class="file">src/emporio/rules.py:48 · tools.py:113</span>
+<pre class="src">INSTALLMENT_FLOORS = [(3, 50.0), (6, 80.0), (12, 100.0)]<span class="pin">1</span>
+
+def max_installments(amount: float) -&gt; int:
+    best = 1
+    for ceiling, floor in INSTALLMENT_FLOORS:
+        for count in range(best + 1, ceiling + 1):
+            if amount / count &gt;= floor:
+                best = count
+    return best
+
+"diga_assim": {<span class="pin">2</span>
+    "preco": _brl(row["effective_price"]),
+    "parcelamento": f"{...}x de {_brl(...)}",
+},</pre></div>
+              <ol class="notes">
+                <li><span class="pin">1</span><span>Faixas: até 3x com parcela ≥ R$ 50; até 6x com ≥ R$ 80; até 12x com ≥ R$ 100.</span></li>
+                <li><span class="pin">2</span><span>Veio de um bug real: com <code>599.9</code>, o modelo escreveu "R$ 599,00" (<code>tools.py:71</code>). Copiar string tem menos chance de erro que transcrever float.</span></li>
+              </ol>
+            </div>
+            <div class="decision">
+              <div><span class="k">Escolha</span>Regras em Python, com teste</div>
+              <div><span class="k">Recusado</span>Regras no system prompt</div>
+              <div><span class="k">Por quê</span>No prompt, o modelo refaz a conta a cada turno e acerta "most of the time", o que não basta para preço. Limite admitido: o número que o modelo digita ainda pode sair errado; copiar mitiga, não garante.</div>
+            </div>
+            <p class="say"><b>Para explicar</b>Regra de negócio é função pura com teste, nunca prompt. E a tool devolve o preço já formatado para o modelo copiar, porque ele errou noventa centavos convertendo o número sozinho.</p>
+          </div>
+        </details>
+
+        <details class="ficha" id="e5">
+          <summary><span class="id">E5</span><span class="t"><h3>Erros: argumento do modelo e falha da API</h3><span class="terms">input validation · errors as values · transient retry</span><span class="one">Erro de tool volta ao modelo; só erro transient tem retry.</span></span><span class="chev">›</span></summary>
+          <div class="body">
+            <p class="concept">Dois tipos de erro, dois tratamentos. <strong>Erro de tool</strong> vira valor (<code>{"error": ...}</code>) e volta ao modelo, que lê e corrige. <strong>Erro da API</strong> só tem retry se for transient: 429, 5xx ou <code>tool_use_failed</code>. Chave inválida sobe como exceção.</p>
+            <ol class="flow">
+              <li class="phase"><span>Erro dentro da tool</span></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Nome existe no <code>REGISTRY</code>?</span><span class="where">tools.py:471</span></div>
+                <div class="outs"><div class="out no"><b>não</b><code>{"error": "ferramenta desconhecida"}</code></div><div class="out yes"><b>sim</b>converte os argumentos</div></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Coerção: <code>"false"</code> vira <code>False</code></span><span class="where">tools.py:39</span></div><p class="why">Em Python, <code>bool("false")</code> é <code>True</code>: o filtro de estoque ficava ligado.</p></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Qualquer exceção vira <code>{"error"}</code> e volta como <code>role: "tool"</code></span></div></div></li>
+              <li class="phase"><span>Erro na chamada à Groq</span></li>
+              <li><div class="st"><div class="row"><span class="who w-ext">Groq</span><span class="what">Erro é transient?</span><span class="where">agent.py:119</span></div>
+                <div class="outs"><div class="out yes"><b>sim</b>espera 0,6 s, 1,2 s e tenta de novo, 3 vezes</div><div class="out no"><b>não</b><code>raise</code>: chave errada aparece</div></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Retries acabaram: fallback com telefone</span><span class="where">agent.py:87</span></div></div></li>
+            </ol>
+            <div class="code-grid">
+              <div class="code"><span class="file">src/emporio/agent.py:12 · agent.py:108</span>
+<pre class="src">TRANSIENT_STATUS = {429, 500, 502, 503}
+TRANSIENT_CODE = "tool_use_failed"<span class="pin">1</span>
+
+for attempt in range(RETRIES):
+    try:
+        response = self.client.chat.completions.create(...)
+        return response.choices[0].message
+    except APIStatusError as error:
+        if not _is_transient(error):
+            raise<span class="pin">2</span>
+        if attempt &lt; RETRIES - 1:
+            time.sleep(0.6 * (attempt + 1))<span class="pin">3</span>
+return None</pre></div>
+              <ol class="notes">
+                <li><span class="pin">1</span><span>O gpt-oss às vezes emite o canal interno como tool call "commentary", e a Groq rejeita. Isso depende da amostragem e costuma passar na tentativa seguinte (<code>agent.py:98</code>).</span></li>
+                <li><span class="pin">2</span><span>"Hiding it behind a friendly message only wastes someone's afternoon."</span></li>
+                <li><span class="pin">3</span><span>Backoff linear e curto: é um chat, e o cliente está esperando.</span></li>
+              </ol>
+            </div>
+            <p class="say"><b>Para explicar</b>Trato o argumento do modelo como input de usuário: converto, valido e devolvo o erro como JSON para ele corrigir. Na API, só faço retry de 429 e 5xx; erro de configuração sobe na hora.</p>
+          </div>
+        </details>
+
+        <details class="ficha" id="e6">
+          <summary><span class="id">E6</span><span class="t"><h3>Testes, rastreabilidade e eval</h3><span class="terms">traceability matrix · dependency injection · eval set</span><span class="one">Cada cláusula do manual tem teste, e o CI cobra.</span></span><span class="chev">›</span></summary>
+          <div class="body">
+            <p class="concept">O teste aponta para a <strong>cláusula do manual</strong> que ele prova. Um script gera a matriz cláusula → código → teste (<code>SPEC.md</code>), e um teste quebra o build quando uma cláusula fica sem teste. O cliente da Groq entra por <strong>dependency injection</strong>, então o teste não usa rede.</p>
+            <ol class="flow">
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Cláusula declarada em <code>spec.py</code></span></div><p class="why">Exemplo: 6.2, o PIX não soma com promoção.</p></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Teste marcado com <code>@pytest.mark.spec("6.2")</code></span><span class="where">test_rules.py:14</span></div></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what"><code>spec_matrix.py</code> gera o <code>SPEC.md</code></span></div><p class="why">Gerado, nunca editado à mão: não diverge da suite.</p></div></li>
+              <li><div class="st"><div class="row"><span class="who w-code">código</span><span class="what">Cláusula sem teste?</span><span class="where">test_spec_coverage.py</span></div>
+                <div class="outs"><div class="out no"><b>sim</b>CI vermelho</div><div class="out yes"><b>não</b>build passa</div></div></div></li>
+            </ol>
+            <div class="decision">
+              <div><span class="k">Lacuna admitida</span>Sem eval ponta a ponta</div>
+              <div><span class="k">O que faria</span>~40 perguntas com comportamento esperado</div>
+              <div><span class="k">Métrica</span>Chamou a tool certa? Todo número da resposta veio de uma tool? A segunda dá para checar comparando os números da resposta com o JSON.</div>
+            </div>
+            <p class="say"><b>Para explicar</b>Cada regra do manual tem um teste marcado com a cláusula, e o CI quebra se uma cláusula ficar sem teste. O que falta é um eval do agente: medir se ele chama a tool certa e se todo número veio de uma tool.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="label">Onde mexer para mudar</span>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Mudança</th><th>Onde mexer</th></tr></thead>
+        <tbody>
+          <tr><td>Mudar o desconto PIX</td><td><code>rules.py:10</code> <code>PIX_DISCOUNT</code> + teste</td></tr>
+          <tr><td>Mudar faixa de parcelas</td><td><code>rules.py:19</code> <code>INSTALLMENT_FLOORS</code> + teste</td></tr>
+          <tr><td>Nova tool</td><td>função + <code>SCHEMAS</code> (<code>tools.py:363</code>) + <code>REGISTRY</code> (<code>:355</code>)</td></tr>
+          <tr><td>Mais seções no RAG</td><td><code>limit=3</code> em <code>tools.py:327</code></td></tr>
+          <tr><td>Memória maior ou menor</td><td><code>HISTORY_TURNS</code> em <code>config.py:18</code></td></tr>
+          <tr><td>Nova regra de comportamento</td><td><code>TURN_REMINDER</code> em <code>prompts.py:72</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+
+  <p class="foot">Repositório: <code>dv-dev1/emporio-da-musica-agent</code>. Trechos encurtados com <code>...</code>; os marcadores numerados não fazem parte do código.</p>
+</div>
+
+<script>
+(function () {
+  var ids = ["padrao", "emporio"];
+  function show(id) {
+    if (ids.indexOf(id) < 0) id = "padrao";
+    ids.forEach(function (v) {
+      document.getElementById(v).hidden = v !== id;
+      document.getElementById("tab-" + v).setAttribute("aria-selected", String(v === id));
+    });
+    try { localStorage.setItem("aba", id); } catch (e) {}
+  }
+  ids.forEach(function (v) {
+    document.getElementById("tab-" + v).addEventListener("click", function () { show(v); window.scrollTo({ top: 0 }); });
+  });
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest("[data-open]");
+    if (!a) return;
+    ev.preventDefault();
+    var d = document.getElementById(a.getAttribute("data-open"));
+    if (!d) return;
+    d.open = true;
+    d.scrollIntoView({ block: "start", behavior: "smooth" });
+  });
+  var inicial = (location.hash || "").slice(1);
+  if (!inicial) { try { inicial = localStorage.getItem("aba") || ""; } catch (e) {} }
+  show(inicial);
+})();
+</script>
+<script>
+// Um fluxo por projeto. k: ev evento, q pergunta, calc cálculo, end fim, human pessoa.
+// t/s: rótulo de negócio; c/f: código e arquivo:linha. Passo: id, lados [[rótulo, id]], desce (rótulo da saída de baixo).
+var FLUXO = {
+  emporio: {
+    caso: { titulo: "o C40 parcela em quantas?", passos: [
+      ["chat", "Chega a pergunta: o Yamaha C40 parcela em quantas?"],
+      ["prompt", "System prompt, últimas 12 trocas e <code>TURN_REMINDER</code>."],
+      ["agent", "Volta 1: o modelo pede a tool <code>get_product</code>."],
+      ["promo", "O C40 não tem promoção ativa."],
+      ["pixd", "R$ 599,90 menos 5%: R$ 569,90."],
+      ["parc", "12x daria R$ 49,99, abaixo de R$ 100. Sai 6x de R$ 99,98."],
+      ["valores", "A tool devolve os valores já escritos."],
+      ["agent", "Volta 2: o modelo escreve a resposta."],
+      ["ok", "Veio texto."],
+      ["gravar", "Grava pergunta e resposta, sem o JSON da tool."],
+      ["resp", "Até 6x de R$ 99,98 sem juros, ou R$ 569,90 no PIX."]] },
+    lanes: [
+      { titulo: "Conversa com o agente", passos: [
+        { id: "chat" }, { id: "prompt" }, { id: "agent" },
+        { id: "ok", lados: [["não", "fallback"]], desce: "sim" },
+        { id: "gravar" }, { id: "resp" }] },
+      { titulo: "Preço e pagamento", de: "agent", passos: [
+        { id: "promo", lados: [["sim", "pixp"]], desce: "não" },
+        { id: "pixd" }, { id: "parc" }, { id: "valores" }] },
+      { titulo: "Troca e devolução", de: "agent", passos: [
+        { id: "troca" },
+        { id: "contato", lados: [["não", "pede"]], desce: "sim" },
+        { id: "status", lados: [["a enviar", "cancela"], ["cancelado", "ccl"], ["enviado", "recusa"]], desce: "entregue" },
+        { id: "dias" },
+        { id: "r7", lados: [["sim", "a7"]], desce: "segue" },
+        { id: "r30", lados: [["sim", "a30"]], desce: "segue" },
+        { id: "r90", lados: [["sim", "a90"], ["não", "fab"]] }] }
+    ],
+    nos: {
+      chat: { k: "ev", t: "Cliente pergunta no chat", s: "CLI ou Streamlit", c: "agent.reply(message)", f: "cli.py:48 · app.py:53",
+        faz: "A mensagem entra pela CLI ou pelo Streamlit. Os dois só chamam <code>agent.reply</code>: a lógica fica no <code>Agent</code>." },
+      prompt: { k: "calc", t: "Junta regras e conversa recente", s: "últimas 12 trocas", c: "conversation = [...]", f: "agent.py:57", ficha: "e2",
+        faz: "System prompt, últimas 12 trocas do SQLite e o <code>TURN_REMINDER</code> logo antes da mensagem. A API é stateless: tudo vai de novo.",
+        codigo: 'conversation = [\n    {"role": "system", "content": prompts.SYSTEM_PROMPT},\n    *self.history.messages(),\n    {"role": "system", "content": prompts.TURN_REMINDER},\n    {"role": "user", "content": message},\n]' },
+      agent: { k: "calc", llm: true, t: "Modelo escolhe uma tool", s: "até 6 voltas", c: "for _ in range(MAX_TOOL_ROUNDS)", f: "agent.py:65", ficha: "e1",
+        faz: "O modelo pede uma das 5 tools; o código executa e devolve o resultado como <code>role: \"tool\"</code>. Para quando vem texto, ou em 6 voltas." },
+      ok: { k: "q", t: "Veio resposta em texto?", s: "ou estourou as voltas", c: "if not choice.tool_calls", f: "agent.py:69",
+        faz: "Não: estourou 6 voltas, ou o retry da Groq acabou e <code>_complete</code> devolveu <code>None</code>." },
+      fallback: { k: "calc", t: "Resposta fixa com o telefone", s: "o cliente nunca vê o erro", c: "FALLBACK", f: "agent.py:86", ficha: "e5", vai: "gravar",
+        faz: "Pede para reformular e dá o telefone da loja. Também é gravada no histórico." },
+      gravar: { k: "calc", t: "Guarda pergunta e resposta", s: "sem o JSON das tools", c: "history.add()", f: "agent.py:71 · memory.py:44", ficha: "e2",
+        faz: "<code>INSERT</code> na tabela <code>messages</code> por <code>session_id</code>. Preço velho reenviado depois viraria resposta errada." },
+      resp: { k: "end", t: "Responde ao cliente", s: "texto e tools usadas", c: "Reply(answer, used)", f: "agent.py:73" },
+      promo: { k: "q", t: "Promoção ativa?", s: "a maior vale", c: "view catalog", f: "etl.py:101 · rules.py:68",
+        faz: "A view <code>catalog</code> pega a maior promoção ativa e calcula o preço efetivo.",
+        porque: "§6.2: promoções não se somam.", fonte: "SPEC.md:23", exemplo: "C40: sem promoção. Crafter HT-100: 18% off, R$ 2.399 vira R$ 1.967,18." },
+      pixp: { k: "calc", t: "PIX = preço promocional", s: "sem mais 5%", c: "pix = effective", f: "rules.py:69", vai: "parc",
+        porque: "§6.2: o desconto PIX não vale sobre preço promocional.", fonte: "SPEC.md:23", exemplo: "Crafter HT-100: PIX R$ 1.967,18." },
+      pixd: { k: "calc", t: "PIX = tabela − 5%", s: "à vista", c: "price * 0.95", f: "rules.py:72",
+        porque: "§3: PIX à vista tem 5% de desconto.", fonte: "SPEC.md:15", exemplo: "C40: R$ 569,90." },
+      parc: { k: "calc", t: "Parcelas pela faixa", s: "maior n com parcela mínima", c: "installments()", f: "rules.py:48", ficha: "e4",
+        faz: "Até 3x com R$ 50, até 6x com R$ 80, até 12x com R$ 100 de parcela mínima.",
+        porque: "§3.1: a regra mais específica vence a tabela do §3.", fonte: "README.md:264", exemplo: "C40: 12x daria R$ 49,99; sai 6x de R$ 99,98." },
+      valores: { k: "end", t: "Valores escritos pela tool", s: "o modelo só copia", c: "diga_assim", f: "tools.py:239", vai: "agent", ficha: "e4",
+        porque: "Valor calculado em código tem teste.", fonte: "SPEC.md:24" },
+      troca: { k: "ev", t: "Cliente pede troca", s: "número e contato", c: "get_order", f: "tools.py:259",
+        faz: "A tool consulta o pedido e devolve os prazos abertos.", porque: "Os prazos dependem do status e da data.", fonte: "SPEC.md:17" },
+      contato: { k: "q", t: "Contato confere?", s: "e-mail ou telefone", c: "customer_contact", f: "tools.py:279 · :286",
+        faz: "Telefone comparado só pelos dígitos. Pedido inexistente também para aqui.",
+        porque: "§9: dados do pedido só para o titular.", fonte: "SPEC.md:27", exemplo: "Número certo com e-mail errado: nada aparece." },
+      pede: { k: "end", t: "Pede e-mail ou telefone", s: "nada do pedido aparece", c: "\"não confere\"", f: "tools.py:286" },
+      status: { k: "q", t: "Status do pedido?", s: "muda o que dá para fazer", c: "order_windows()", f: "rules.py:169",
+        porque: "Os prazos de troca só começam no recebimento.", fonte: "rules.py:181" },
+      cancela: { k: "end", t: "Cancelar antes do envio", s: "pending ou confirmed", c: "status in (pending, confirmed)", f: "rules.py:169" },
+      ccl: { k: "end", t: "Já cancelado", s: "nada a abrir", c: "status == cancelled", f: "rules.py:174" },
+      recusa: { k: "end", t: "Recusar se avariado", s: "em trânsito", c: "status == shipped", f: "rules.py:178" },
+      dias: { k: "calc", t: "Conta os dias", s: "do recebimento e da compra", c: "days_since()", f: "rules.py:189",
+        faz: "Os três prazos são independentes: a resposta lista o que segue aberto e o que fechou.",
+        exemplo: "Sem data de entrega nos dados: usa a estimada e avisa (README.md:265)." },
+      r7: { k: "q", t: "Até 7 dias do recebimento?", s: "arrependimento", c: "days <= 7", f: "rules.py:194", porque: "§4.1.", fonte: "SPEC.md:17" },
+      a7: { k: "calc", t: "Arrependimento ou troca", s: "embalagem original", c: "windows.append(...)", f: "rules.py:195" },
+      r30: { k: "q", t: "Até 30 dias da compra?", s: "conta da compra", c: "days_purchase <= 30", f: "rules.py:204", porque: "§4.2.", fonte: "SPEC.md:18" },
+      a30: { k: "calc", t: "Troca por defeito", s: "defeito de fabricação", c: "windows.append(...)", f: "rules.py:205" },
+      r90: { k: "q", t: "Até 90 dias do recebimento?", s: "garantia legal", c: "days <= 90", f: "rules.py:209", porque: "§8.1.", fonte: "SPEC.md:26" },
+      a90: { k: "end", t: "Garantia legal", s: "90 dias", c: "windows.append(...)", f: "rules.py:210" },
+      fab: { k: "end", t: "Garantia do fabricante", s: "a loja intermedeia", c: "windows.append(...)", f: "rules.py:213" }
+    }
+  }
+};
+</script>
+<script>
+(function () {
+  // Sem `vai`, um desvio que não é fim volta ao passo seguinte do caminho principal.
+  var MARCA = { ev: "○", q: "◇", calc: "=", end: "□", human: "●" };
+  var MODOS = [["neg", "Negócio"], ["cod", "Código"], ["dois", "Os dois"]];
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function rotulo(txt) { return txt === "sim" ? "yes" : txt === "não" ? "no" : "lbl"; }
+
+  function montar(raiz, fx) {
+    var nos = fx.nos, caixas = {}, linhas = {}, aberto = null, modo = "neg";
+    var passos = {};
+    (fx.caso ? fx.caso.passos : []).forEach(function (p, i) { (passos[p[0]] = passos[p[0]] || []).push([i + 1, p[1]]); });
+
+    var barra = el("div", "fx-bar"), seg = el("div", "seg");
+    seg.setAttribute("role", "group"); seg.setAttribute("aria-label", "Camada");
+    MODOS.forEach(function (m) {
+      var b = el("button", null, m[1]); b.type = "button"; b.setAttribute("aria-pressed", String(m[0] === modo));
+      b.onclick = function () { modo = m[0]; seg.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); }); pintar(); };
+      seg.appendChild(b);
+    });
+    barra.appendChild(seg);
+    if (fx.caso) {
+      var bc = el("button", "fx-caso", "Seguir o caso: " + fx.caso.titulo); bc.type = "button"; bc.setAttribute("aria-pressed", "false");
+      bc.onclick = function () { var on = !raiz.classList.contains("andando"); raiz.classList.toggle("andando", on); bc.setAttribute("aria-pressed", String(on)); };
+      barra.appendChild(bc);
+    }
+    raiz.appendChild(barra);
+    var rolagem = el("div", "fx-scroll"), dentro = el("div", "fx-in");
+    rolagem.appendChild(dentro); raiz.appendChild(rolagem);
+
+    function caixa(id, linha) {
+      var n = nos[id], b = el("button", "nd " + n.k + (n.llm ? " llm" : ""));
+      b.type = "button"; b.setAttribute("aria-expanded", "false");
+      b.appendChild(el("span", "mk", n.llm ? "✦" : MARCA[n.k]));
+      var tx = el("span", "tx"); b._tt = el("span", "tt"); b._sub = el("small"); tx.appendChild(b._tt); tx.appendChild(b._sub);
+      if (n.vai) tx.appendChild(el("span", "vai", "↪ vai a: " + nos[n.vai].t));
+      if (passos[id]) {
+        b.classList.add("on");
+        var cn = el("span", "cn");
+        passos[id].forEach(function (p, j) { if (j) cn.appendChild(el("br")); cn.appendChild(el("span", "num", String(p[0]))); var t = el("span"); t.innerHTML = p[1]; cn.appendChild(t); });
+        tx.appendChild(cn);
+      }
+      b.appendChild(tx);
+      b.onclick = function () { abrir(id); };
+      caixas[id] = b; linhas[id] = linha; return b;
+    }
+    function abrir(id) {
+      if (aberto) { aberto.det.remove(); caixas[aberto.id].setAttribute("aria-expanded", "false"); var era = aberto.id; aberto = null; if (era === id) return; }
+      var n = nos[id], det = el("div", "det"), dl = el("dl");
+      function item(k, html) { if (!html) return; dl.appendChild(el("dt", null, k)); var dd = el("dd"); dd.innerHTML = html; dl.appendChild(dd); }
+      item("Faz", n.faz);
+      item("Porquê", n.porque && n.porque + ' <span class="where">' + (n.fonte || "inferido") + "</span>");
+      item("Exemplo", n.exemplo);
+      item("Código", "<code>" + n.c + '</code> <span class="where">' + n.f + "</span>");
+      if (passos[id]) item("Caso", passos[id].map(function (p) { return p[0] + ". " + p[1]; }).join("<br>"));
+      det.appendChild(dl);
+      if (n.codigo) { var pre = el("pre", "src", n.codigo); det.appendChild(pre); }
+      if (n.ficha) { var a = el("a", null, "Ficha: " + document.querySelector("#" + n.ficha + " h3").textContent); a.href = "#" + n.ficha; a.setAttribute("data-open", n.ficha); det.appendChild(a); }
+      linhas[id].after(det); aberto = { id: id, det: det }; caixas[id].setAttribute("aria-expanded", "true");
+    }
+    function pintar() {
+      raiz.classList.toggle("cod", modo === "cod");
+      Object.keys(caixas).forEach(function (id) {
+        var n = nos[id], b = caixas[id];
+        b._tt.textContent = modo === "cod" ? n.c : n.t;
+        b._sub.textContent = modo === "neg" ? (n.s || "") : modo === "cod" ? n.f : n.c + " · " + n.f;
+      });
+    }
+
+    fx.lanes.forEach(function (lane) {
+      var h = el("div", "fx-lane"); h.appendChild(el("b", null, lane.titulo));
+      if (lane.de) h.appendChild(el("span", null, "vem de: " + nos[lane.de].t));
+      dentro.appendChild(h);
+      lane.passos.forEach(function (p, i) {
+        var linha = el("div", "fx-row"); linha.appendChild(caixa(p.id, linha));
+        if (p.lados) {
+          var lados = el("div", "fx-sides");
+          p.lados.forEach(function (l) { var s = el("div", "fx-side"); s.appendChild(el("span", "ar " + rotulo(l[0]), l[0])); s.appendChild(caixa(l[1], linha)); lados.appendChild(s); });
+          linha.appendChild(lados);
+        }
+        dentro.appendChild(linha);
+        if (i === lane.passos.length - 1) return;
+        var dn = el("div", "dn"); dn.appendChild(el("i"));
+        if (p.desce) { dn.appendChild(el("span", rotulo(p.desce), p.desce)); dn.appendChild(el("i")); }
+        dentro.appendChild(dn);
+      });
+    });
+    pintar();
+  }
+  document.querySelectorAll("[data-fluxo]").forEach(function (raiz) { montar(raiz, FLUXO[raiz.getAttribute("data-fluxo")]); });
+})();
+</script>
+<script>
+(function () {
+  var GLOSSARIO = {
+    "arrependimento": "Devolver sem justificativa em até 7 dias do recebimento (§4.1 do manual).",
+    "garantia legal": "90 dias contra defeito, contados do recebimento (§8.1 do manual).",
+    "PIX": "Pagamento instantâneo à vista; aqui dá 5% de desconto sobre a tabela."
+  };
+  var termos = new RegExp("(?<![\\p{L}])(" + Object.keys(GLOSSARIO).join("|") + ")(?![\\p{L}])", "giu");
+  function definicao(achado) {
+    for (var k in GLOSSARIO) if (k.toLowerCase() === achado.toLowerCase()) return GLOSSARIO[k];
+  }
+  // Só a primeira ocorrência por bloco: sublinhar toda "autorização" vira ruído.
+  function marcarTermos(raiz) {
+    var vistos = {}, textos = [];
+    // Texto solto num pai grid/flex: o dfn viraria item próprio e quebraria a linha.
+    var andar = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT, { acceptNode: function (t) {
+      var pai = t.parentElement;
+      return pai.closest("code, pre, button, dfn, .where, .table-wrap, svg, h1, h2, summary") || /grid|flex/.test(getComputedStyle(pai).display)
+        ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    } });
+    while (andar.nextNode()) textos.push(andar.currentNode);
+    textos.forEach(function (t) {
+      var partes = t.nodeValue.split(termos);
+      if (partes.length < 2) return;
+      var frag = document.createDocumentFragment();
+      partes.forEach(function (p, i) {
+        var chave = p.toLowerCase();
+        if (i % 2 === 0 || vistos[chave]) { frag.appendChild(document.createTextNode(p)); return; }
+        vistos[chave] = true;
+        var d = document.createElement("dfn");
+        d.className = "termo";
+        d.tabIndex = 0;
+        d.setAttribute("data-def", definicao(p));
+        d.textContent = p;
+        frag.appendChild(d);
+      });
+      t.parentNode.replaceChild(frag, t);
+    });
+  }
+
+  // Um tooltip só, preso dentro da tela: ::after estourava a borda num termo perto da direita.
+  var dica = document.createElement("div");
+  dica.className = "dica";
+  dica.hidden = true;
+  document.body.appendChild(dica);
+  function mostrarDica(ev) {
+    var d = ev.target.closest && ev.target.closest("dfn.termo");
+    if (!d) { dica.hidden = true; return; }
+    dica.textContent = d.getAttribute("data-def");
+    dica.hidden = false;
+    var r = d.getClientRects()[0], w = dica.offsetWidth;
+    dica.style.left = Math.max(16, Math.min(r.left, innerWidth - w - 16)) + "px";
+    dica.style.top = r.bottom + 6 + "px";
+  }
+  ["mouseover", "focusin"].forEach(function (t) { document.addEventListener(t, mostrarDica); });
+  document.addEventListener("focusout", function () { dica.hidden = true; });
+  addEventListener("scroll", function () { dica.hidden = true; }, { passive: true });
+
+  // Regra de negócio liga ao node técnico que a aplica; o caminho de volta é calculado.
+  document.querySelectorAll(".view > .block, details.ficha .body").forEach(marcarTermos);
+})();
+</script>

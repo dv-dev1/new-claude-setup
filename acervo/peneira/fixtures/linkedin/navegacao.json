@@ -1,0 +1,24 @@
+{
+ "job_id": "4480028536",
+ "empresa": "Dr. Tis",
+ "url": "/flagship-web/rsc-action/actions/navigation?screenId=com.linkedin.sdui.flagshipnav.jobs.easyapply.EasyApply&sduiid=com.linkedin.sdui.flagshipnav.jobs.easyapply.EasyApply",
+ "corpo": {
+  "clientArguments": {
+   "$type": "proto.sdui.actions.requests.RequestedArguments",
+   "requestedStateKeys": [],
+   "payload": {
+    "jobId": "4480028536",
+    "companyName": "Dr. Tis",
+    "trackingId": "FAKE==",
+    "applicantTrackingSystemName": "LinkedIn"
+   },
+   "requestMetadata": {
+    "$type": "proto.sdui.common.RequestMetadata"
+   },
+   "states": [],
+   "screenId": "com.linkedin.sdui.flagshipnav.jobs.easyapply.EasyApply",
+   "knownTemplateIds": []
+  },
+  "isModal": true
+ }
+}

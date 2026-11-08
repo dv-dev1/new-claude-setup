@@ -2,6 +2,7 @@
 """Testes do setup fora da varredura: hooks do caveman e acervo. Rode: python3 tests/test_setup.py"""
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -47,6 +48,41 @@ def test_subagentstart_emite_json_do_caveman():
 
 def test_lembrete_caveman_por_mensagem():
     assert LEMBRETE in [json.loads(s)["hookSpecificOutput"]["additionalContext"] for s in saidas("UserPromptSubmit")]
+
+
+ACERVO = os.path.join(RAIZ, "acervo")
+
+
+def pastas_do_acervo():
+    """(nome, caminho) de cada skill do acervo: acervo/<nome>/ e acervo/caveman/<nome>/."""
+    pastas = []
+    for base in (ACERVO, os.path.join(ACERVO, "caveman")):
+        for nome in sorted(os.listdir(base)):
+            caminho = os.path.join(base, nome)
+            if os.path.isdir(caminho) and caminho != os.path.join(ACERVO, "caveman"):
+                pastas.append((nome, caminho))
+    return pastas
+
+
+def test_acervo_listado_no_claude_global():
+    with open(os.path.join(RAIZ, "CLAUDE.global.md"), encoding="utf-8") as fh:
+        linha = next(l for l in fh if l.startswith("- Acervo:"))
+    pastas = pastas_do_acervo()
+    assert pastas
+    for nome, caminho in pastas:
+        assert os.path.isfile(os.path.join(caminho, "SKILL.md")), nome
+        assert re.search(rf"(?<![\w-]){re.escape(nome)}(?![\w-])", linha), nome
+
+
+def test_acervo_sem_caminho_de_skill_ativa():
+    arquivos = [os.path.join(raiz, a) for raiz, _, nomes in os.walk(ACERVO) for a in nomes]
+    assert arquivos
+    velhos = []
+    for arquivo in arquivos:
+        with open(arquivo, encoding="utf-8", errors="ignore") as fh:
+            if "~/.claude/skills/" in fh.read():
+                velhos.append(os.path.relpath(arquivo, ACERVO))
+    assert not velhos, velhos
 
 
 if __name__ == "__main__":

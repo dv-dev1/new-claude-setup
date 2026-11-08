@@ -1,0 +1,599 @@
+{
+ "escolher": {
+  "corpo": {
+   "requestId": "com.linkedin.sdui.requests.jobseeker.easyapply.handlePickedFile",
+   "serverRequest": {
+    "requestId": "com.linkedin.sdui.requests.jobseeker.easyapply.handlePickedFile",
+    "requestedArguments": {
+     "$type": "proto.sdui.actions.requests.RequestedArguments",
+     "requestedStateKeys": [
+      {
+       "key": {
+        "value": {
+         "$case": "id",
+         "id": "resume-picked-media"
+        }
+       }
+      },
+      {
+       "key": {
+        "value": {
+         "$case": "id",
+         "id": "easyApply.resumeSelectedKeyId"
+        }
+       }
+      }
+     ],
+     "payload": {
+      "mediaList": {
+       "key": "resume-picked-media",
+       "namespace": "MemoryNamespace"
+      },
+      "mediaListBinding": {
+       "key": "resume-picked-media",
+       "namespace": "MemoryNamespace"
+      },
+      "progressBinding": {
+       "key": "resume-upload-progress",
+       "namespace": "MemoryNamespace"
+      },
+      "isUploadingBinding": {
+       "key": "resume-upload-state",
+       "namespace": "MemoryNamespace"
+      },
+      "documentUploadKind": "resume",
+      "resumeSelectedKeyId": {
+       "key": "easyApply.resumeSelectedKeyId",
+       "namespace": "MemoryNamespace"
+      },
+      "fullWidth": false,
+      "jobId": "4482617482"
+     },
+     "requestMetadata": {
+      "$type": "proto.sdui.common.RequestMetadata"
+     }
+    },
+    "isApfcEnabled": false,
+    "isStreaming": false,
+    "rumPageKey": ""
+   },
+   "states": [
+    {
+     "key": "resume-picked-media",
+     "namespace": "MemoryNamespace",
+     "value": {
+      "$type": "proto.sdui.media.MediaList",
+      "mediaFiles": [
+       {
+        "mediaAttributions": [],
+        "analysisData": {},
+        "fileName": "cv.pdf",
+        "source": {
+         "$case": "localFile",
+         "localFile": {
+          "fileName": "cv.pdf",
+          "mimeType": "application/pdf",
+          "filePointer": "kxk3e2cwei",
+          "size": "101237",
+          "shouldIncludeFileContents": false
+         }
+        },
+        "size": "101237",
+        "mimeType": "application/pdf",
+        "filePointer": "kxk3e2cwei",
+        "mediaFileId": "kxk3e2cwei",
+        "captions": [],
+        "thumbnails": []
+       }
+      ]
+     },
+     "originalProtoCase": "mediaListValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "resume-picked-media"
+      }
+     }
+    },
+    {
+     "key": "easyApply.resumeSelectedKeyId",
+     "namespace": "MemoryNamespace",
+     "value": "ea.q::32383411340::LARGER_RESUME::selectedResume",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "easyApply.resumeSelectedKeyId"
+      }
+     }
+    }
+   ],
+   "requestedArguments": {
+    "$type": "proto.sdui.actions.requests.RequestedArguments",
+    "requestedStateKeys": [
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "resume-picked-media"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "easyApply.resumeSelectedKeyId"
+       }
+      }
+     }
+    ],
+    "payload": {
+     "mediaList": {
+      "key": "resume-picked-media",
+      "namespace": "MemoryNamespace"
+     },
+     "mediaListBinding": {
+      "key": "resume-picked-media",
+      "namespace": "MemoryNamespace"
+     },
+     "progressBinding": {
+      "key": "resume-upload-progress",
+      "namespace": "MemoryNamespace"
+     },
+     "isUploadingBinding": {
+      "key": "resume-upload-state",
+      "namespace": "MemoryNamespace"
+     },
+     "documentUploadKind": "resume",
+     "resumeSelectedKeyId": {
+      "key": "easyApply.resumeSelectedKeyId",
+      "namespace": "MemoryNamespace"
+     },
+     "fullWidth": false,
+     "jobId": "4482617482"
+    },
+    "requestMetadata": {
+     "$type": "proto.sdui.common.RequestMetadata"
+    },
+    "states": [
+     {
+      "key": "resume-picked-media",
+      "namespace": "MemoryNamespace",
+      "value": {
+       "$type": "proto.sdui.media.MediaList",
+       "mediaFiles": [
+        {
+         "mediaAttributions": [],
+         "analysisData": {},
+         "fileName": "cv.pdf",
+         "source": {
+          "$case": "localFile",
+          "localFile": {
+           "fileName": "cv.pdf",
+           "mimeType": "application/pdf",
+           "filePointer": "kxk3e2cwei",
+           "size": "101237",
+           "shouldIncludeFileContents": false
+          }
+         },
+         "size": "101237",
+         "mimeType": "application/pdf",
+         "filePointer": "kxk3e2cwei",
+         "mediaFileId": "kxk3e2cwei",
+         "captions": [],
+         "thumbnails": []
+        }
+       ]
+      },
+      "originalProtoCase": "mediaListValue",
+      "protoKey": {
+       "$type": "proto.sdui.Key",
+       "value": {
+        "$case": "id",
+        "id": "resume-picked-media"
+       }
+      }
+     },
+     {
+      "key": "easyApply.resumeSelectedKeyId",
+      "namespace": "MemoryNamespace",
+      "value": "ea.q::32383411340::LARGER_RESUME::selectedResume",
+      "originalProtoCase": "stringValue",
+      "protoKey": {
+       "$type": "proto.sdui.Key",
+       "value": {
+        "$case": "id",
+        "id": "easyApply.resumeSelectedKeyId"
+       }
+      }
+     }
+    ],
+    "screenId": "com.linkedin.sdui.flagshipnav.jobs.easyapply.EasyApply",
+    "knownTemplateIds": []
+   }
+  },
+  "resposta": "1:[]\n0:{\"states\":[{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-url-cv.pdf\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}],\"response\":{\"$type\":\"proto.sdui.responses.ServerRequestResponse\",\"errors\":[],\"isRetryable\":false,\"completionAction\":{\"actions\":[{\"$type\":\"proto.sdui.actions.core.ServerRequest\",\"value\":{\"requestId\":\"com.linkedin.sdui.requests.jobseeker.easyapply.getAmbryUploadUrl\",\"requestedArguments\":{\"$type\":\"proto.sdui.actions.requests.RequestedArguments\",\"requestedStateKeys\":[],\"payload\":{\"uploadUrlBinding\":{\"key\":\"resume-upload-url-cv.pdf\",\"namespace\":\"MemoryNamespace\"},\"contentType\":\"application/pdf\",\"filename\":\"cv.pdf\",\"maxSizeBytes\":\"101237\",\"mediaListBinding\":{\"key\":\"resume-picked-media\",\"namespace\":\"MemoryNamespace\"},\"progressBinding\":{\"key\":\"resume-upload-progress\",\"namespace\":\"MemoryNamespace\"},\"isUploadingBinding\":{\"key\":\"resume-upload-state\",\"namespace\":\"MemoryNamespace\"},\"documentUploadKind\":\"resume\",\"fullWidth\":false,\"jobId\":\"4482617482\",\"selectionKeyIdSnapshot\":\"ea.q::32383411340::LARGER_RESUME::selectedResume\"},\"requestMetadata\":{\"$type\":\"proto.sdui.common.RequestMetadata\"}},\"onClientRequestFailureAction\":{\"actions\":[{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-state\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":false}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-progress\"}}},\"value\":{\"$case\":\"intValue\",\"intValue\":0}}}},{\"$type\":\"proto.sdui.actions.core.ShowToast\",\"value\":{\"duration\":\"ToastDuration_UNKNOWN\",\"key\":\"773e79d6-d799-4f67-ac55-16b3869229ee\",\"presetToast\":{\"category\":\"ToastPresetCategory_ERROR\",\"text\":[\"Erro ao carregar URL. Tente novamente.\"]}}}]},\"isApfcEnabled\":false,\"isStreaming\":false,\"rumPageKey\":\"\",\"maxRetries\":0,\"backOffMultiplier\":0,\"maxSeconds\":0}}],\"sduiTrackingProvenance\":{\"version\":\"0.2.2058\"}}},\"frontendContext\":{\"$type\":\"proto.frontendinfra.ResponseContext\",\"templates\":[],\"DebugTemplates\":[],\"sharedStrings\":[],\"syncedFlags\":[],\"sduiVersion\":\"0.2.2058\",\"encryptedServerIdentifier\":\"\",\"sharedTemplates\":\"$Q1\",\"requiredTemplateIds\":[]},\"treeId\":\"FAKE==\",\"sduiTrackingProvenance\":\"$0:response:completionAction:sduiTrackingProvenance\"}\n"
+ },
+ "url": {
+  "corpo": {
+   "requestId": "com.linkedin.sdui.requests.jobseeker.easyapply.getAmbryUploadUrl",
+   "serverRequest": {
+    "requestId": "com.linkedin.sdui.requests.jobseeker.easyapply.getAmbryUploadUrl",
+    "requestedArguments": {
+     "$type": "proto.sdui.actions.requests.RequestedArguments",
+     "requestedStateKeys": [],
+     "payload": {
+      "uploadUrlBinding": {
+       "key": "resume-upload-url-cv.pdf",
+       "namespace": "MemoryNamespace"
+      },
+      "contentType": "application/pdf",
+      "filename": "cv.pdf",
+      "maxSizeBytes": "101237",
+      "mediaListBinding": {
+       "key": "resume-picked-media",
+       "namespace": "MemoryNamespace"
+      },
+      "progressBinding": {
+       "key": "resume-upload-progress",
+       "namespace": "MemoryNamespace"
+      },
+      "isUploadingBinding": {
+       "key": "resume-upload-state",
+       "namespace": "MemoryNamespace"
+      },
+      "documentUploadKind": "resume",
+      "fullWidth": false,
+      "jobId": "4482617482",
+      "selectionKeyIdSnapshot": "ea.q::32383411340::LARGER_RESUME::selectedResume"
+     },
+     "requestMetadata": {
+      "$type": "proto.sdui.common.RequestMetadata"
+     }
+    },
+    "onClientRequestFailureAction": {
+     "actions": [
+      {
+       "$type": "proto.sdui.actions.core.SetState",
+       "value": {
+        "state": {
+         "key": {
+          "key": {
+           "value": {
+            "$case": "id",
+            "id": "resume-upload-state"
+           }
+          }
+         },
+         "value": {
+          "$case": "booleanValue",
+          "booleanValue": false
+         }
+        }
+       }
+      },
+      {
+       "$type": "proto.sdui.actions.core.SetState",
+       "value": {
+        "state": {
+         "key": {
+          "key": {
+           "value": {
+            "$case": "id",
+            "id": "resume-upload-progress"
+           }
+          }
+         },
+         "value": {
+          "$case": "intValue",
+          "intValue": 0
+         }
+        }
+       }
+      },
+      {
+       "$type": "proto.sdui.actions.core.ShowToast",
+       "value": {
+        "duration": "ToastDuration_UNKNOWN",
+        "key": "773e79d6-d799-4f67-ac55-16b3869229ee",
+        "presetToast": {
+         "category": "ToastPresetCategory_ERROR",
+         "text": [
+          "Erro ao carregar URL. Tente novamente."
+         ]
+        }
+       }
+      }
+     ]
+    },
+    "isApfcEnabled": false,
+    "isStreaming": false,
+    "rumPageKey": ""
+   },
+   "states": [],
+   "requestedArguments": {
+    "$type": "proto.sdui.actions.requests.RequestedArguments",
+    "requestedStateKeys": [],
+    "payload": {
+     "uploadUrlBinding": {
+      "key": "resume-upload-url-cv.pdf",
+      "namespace": "MemoryNamespace"
+     },
+     "contentType": "application/pdf",
+     "filename": "cv.pdf",
+     "maxSizeBytes": "101237",
+     "mediaListBinding": {
+      "key": "resume-picked-media",
+      "namespace": "MemoryNamespace"
+     },
+     "progressBinding": {
+      "key": "resume-upload-progress",
+      "namespace": "MemoryNamespace"
+     },
+     "isUploadingBinding": {
+      "key": "resume-upload-state",
+      "namespace": "MemoryNamespace"
+     },
+     "documentUploadKind": "resume",
+     "fullWidth": false,
+     "jobId": "4482617482",
+     "selectionKeyIdSnapshot": "ea.q::32383411340::LARGER_RESUME::selectedResume"
+    },
+    "requestMetadata": {
+     "$type": "proto.sdui.common.RequestMetadata"
+    },
+    "states": [],
+    "screenId": "com.linkedin.sdui.flagshipnav.jobs.easyapply.EasyApply",
+    "knownTemplateIds": []
+   }
+  },
+  "resposta": "1:T5d,https://www.linkedin.com/ambry/?x-li-ambry-ep=FAKE&filename=cv.pdf&x-ambry-um-filename=cv.pdf5:[]\n0:{\"states\":[{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-uploaded-asset-ids\"}}},\"value\":{\"$case\":\"stringListValue\",\"stringListValue\":{\"$type\":\"proto.sdui.StringList\",\"stringValues\":[]}}}],\"response\":{\"$type\":\"proto.sdui.responses.ServerRequestResponse\",\"errors\":[],\"isRetryable\":false,\"completionAction\":{\"actions\":[{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-url-cv.pdf\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"$1\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-progress\"}}},\"value\":{\"$case\":\"intValue\",\"intValue\":0}}}},{\"$type\":\"proto.sdui.actions.core.UploadToAmbry\",\"value\":{\"mediaList\":{\"$type\":\"proto.sdui.expressions.MediaListExpression\",\"expression\":{\"$case\":\"bindableMediaList\",\"bindableMediaList\":{\"$type\":\"proto.sdui.bindings.core.Bindable\",\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-picked-media\"}}},\"content\":{\"$case\":\"mediaListBinding\",\"mediaListBinding\":{}}}},\"isReactive\":true},\"uploadUrl\":{\"$type\":\"proto.sdui.expressions.StringExpression\",\"expression\":{\"$case\":\"bindableString\",\"bindableString\":{\"$type\":\"proto.sdui.bindings.core.Bindable\",\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-url-cv.pdf\"}}},\"content\":{\"$case\":\"stringBinding\",\"stringBinding\":{}}}},\"isReactive\":true},\"progress\":{\"$type\":\"proto.sdui.bindings.core.Bindable\",\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-progress\"}}},\"content\":{\"$case\":\"intBinding\",\"intBinding\":{}}},\"onSuccess\":{\"actions\":[{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-state\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":false}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-progress\"}}},\"value\":{\"$case\":\"intValue\",\"intValue\":100}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_1\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_1\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_2\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_2\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_3\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_3\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_4\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_4\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_5\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_5\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_6\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_6\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_7\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_7\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_8\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_8\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_9\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_9\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_10\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"NotSelected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_value_10\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"\"}}}},{\"$type\":\"proto.sdui.actions.core.ShowToast\",\"value\":{\"duration\":\"ToastDuration_UNKNOWN\",\"key\":\"f44931da-a4d7-421b-b48e-f878f5a0b9f2\",\"presetToast\":{\"category\":\"ToastPresetCategory_SUCCESS\",\"text\":\"$L2\"}}},{\"$type\":\"proto.sdui.actions.core.ServerRequest\",\"value\":{\"requestId\":\"com.linkedin.sdui.requests.jobseeker.easyapply.setResumeFormBinding\",\"requestedArguments\":{\"$type\":\"proto.sdui.actions.requests.RequestedArguments\",\"requestedStateKeys\":[{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-uploaded-asset-ids\"}}},{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"easyApply.resumeSelectedKeyId\"}}},{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-picked-media\"}}}],\"payload\":{\"uploadedAssetIds\":{\"key\":\"resume-uploaded-asset-ids\",\"namespace\":\"MemoryNamespace\"},\"resumeSelectedKeyId\":{\"key\":\"easyApply.resumeSelectedKeyId\",\"namespace\":\"MemoryNamespace\"},\"mediaList\":{\"key\":\"resume-picked-media\",\"namespace\":\"MemoryNamespace\"},\"jobId\":\"4482617482\"},\"requestMetadata\":{\"$type\":\"proto.sdui.common.RequestMetadata\"}},\"isApfcEnabled\":false,\"isStreaming\":false,\"rumPageKey\":\"\",\"maxRetries\":0,\"backOffMultiplier\":0,\"maxSeconds\":0,\"onClientRequestFailureAction\":\"$undefined\"}},{\"$type\":\"proto.sdui.actions.core.ReplaceComponent\",\"value\":{\"componentKey\":\"easyApplyUploadedResumeRef\",\"content\":{\"$case\":\"asyncContent\",\"asyncContent\":{\"$type\":\"proto.sdui.actions.core.AsyncComponentRequest\",\"newComponentId\":\"com.linkedin.sdui.generated.jobseeker.dsl.impl.uploadedDocument\",\"requestedArguments\":{\"$type\":\"proto.sdui.actions.requests.RequestedArguments\",\"requestedStateKeys\":[{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-picked-media\"}}},{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-uploaded-asset-ids\"}}},{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"easyApply.resumeSelectedKeyId\"}}}],\"payload\":{\"mediaList\":{\"key\":\"resume-picked-media\",\"namespace\":\"MemoryNamespace\"},\"assetIds\":{\"key\":\"resume-uploaded-asset-ids\",\"namespace\":\"MemoryNamespace\"},\"selectedResumeKeyId\":{\"key\":\"easyApply.resumeSelectedKeyId\",\"namespace\":\"MemoryNamespace\"},\"selectedResumeKeyIdHint\":\"ea.q::32383411340::LARGER_RESUME::selectedResume\",\"fullWidth\":false,\"jobId\":\"4482617482\"},\"requestMetadata\":{\"$type\":\"proto.sdui.common.RequestMetadata\"}},\"onClientRequestFailureAction\":{\"actions\":[{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-state\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":false}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-state\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":false}}}},{\"$type\":\"proto.sdui.actions.core.ShowToast\",\"value\":{\"duration\":\"ToastDuration_UNKNOWN\",\"key\":\"f090a664-cac4-450d-93c9-97e8e4b73fb1\",\"presetToast\":{\"category\":\"ToastPresetCategory_ERROR\",\"text\":\"$L3\"}}}]}}},\"key\":{\"$type\":\"proto.sdui.Key\",\"value\":{\"$case\":\"id\",\"id\":\"easyApplyUploadedResumeRef\"}}}}]},\"onFailure\":{\"actions\":[{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-state\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":false}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-progress\"}}},\"value\":{\"$case\":\"intValue\",\"intValue\":0}}}},{\"$type\":\"proto.sdui.actions.core.ShowToast\",\"value\":{\"duration\":\"ToastDuration_UNKNOWN\",\"key\":\"17c1dc16-f6e6-4130-bb3c-7d5b3cf4df67\",\"presetToast\":{\"category\":\"ToastPresetCategory_ERROR\",\"text\":\"$L4\"}}}]},\"uploadedAssetIds\":{\"$type\":\"proto.sdui.bindings.core.Bindable\",\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-uploaded-asset-ids\"}}},\"content\":{\"$case\":\"listBinding\",\"listBinding\":{}}}}}],\"sduiTrackingProvenance\":{\"version\":\"0.2.2058\"}}},\"frontendContext\":{\"$type\":\"proto.frontendinfra.ResponseContext\",\"templates\":[],\"DebugTemplates\":[],\"sharedStrings\":[],\"syncedFlags\":[],\"sduiVersion\":\"0.2.2058\",\"encryptedServerIdentifier\":\"\",\"sharedTemplates\":\"$Q5\",\"requiredTemplateIds\":[]},\"treeId\":\"FAKE==\",\"sduiTrackingProvenance\":\"$0:response:completionAction:sduiTrackingProvenance\"}\n2:[\"Upload do currículo concluído\"]\n3:[\"Erro no upload do currículo. Tente novamente.\"]\n4:[\"Erro no upload do currículo. Tente novamente.\"]\n"
+ },
+ "vincular": {
+  "corpo": {
+   "requestId": "com.linkedin.sdui.requests.jobseeker.easyapply.setResumeFormBinding",
+   "serverRequest": {
+    "requestId": "com.linkedin.sdui.requests.jobseeker.easyapply.setResumeFormBinding",
+    "requestedArguments": {
+     "$type": "proto.sdui.actions.requests.RequestedArguments",
+     "requestedStateKeys": [
+      {
+       "key": {
+        "value": {
+         "$case": "id",
+         "id": "resume-uploaded-asset-ids"
+        }
+       }
+      },
+      {
+       "key": {
+        "value": {
+         "$case": "id",
+         "id": "easyApply.resumeSelectedKeyId"
+        }
+       }
+      },
+      {
+       "key": {
+        "value": {
+         "$case": "id",
+         "id": "resume-picked-media"
+        }
+       }
+      }
+     ],
+     "payload": {
+      "uploadedAssetIds": {
+       "key": "resume-uploaded-asset-ids",
+       "namespace": "MemoryNamespace"
+      },
+      "resumeSelectedKeyId": {
+       "key": "easyApply.resumeSelectedKeyId",
+       "namespace": "MemoryNamespace"
+      },
+      "mediaList": {
+       "key": "resume-picked-media",
+       "namespace": "MemoryNamespace"
+      },
+      "jobId": "4482617482"
+     },
+     "requestMetadata": {
+      "$type": "proto.sdui.common.RequestMetadata"
+     }
+    },
+    "isApfcEnabled": false,
+    "isStreaming": false,
+    "rumPageKey": ""
+   },
+   "states": [
+    {
+     "key": "resume-uploaded-asset-ids",
+     "namespace": "MemoryNamespace",
+     "value": [
+      "/AAFAKE100.pdf"
+     ],
+     "originalProtoCase": "stringListValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "resume-uploaded-asset-ids"
+      }
+     }
+    },
+    {
+     "key": "easyApply.resumeSelectedKeyId",
+     "namespace": "MemoryNamespace",
+     "value": "ea.q::32383411340::LARGER_RESUME::selectedResume",
+     "originalProtoCase": "stringValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "easyApply.resumeSelectedKeyId"
+      }
+     }
+    },
+    {
+     "key": "resume-picked-media",
+     "namespace": "MemoryNamespace",
+     "value": {
+      "$type": "proto.sdui.media.MediaList",
+      "mediaFiles": [
+       {
+        "mediaAttributions": [],
+        "analysisData": {},
+        "fileName": "cv.pdf",
+        "source": {
+         "$case": "localFile",
+         "localFile": {
+          "fileName": "cv.pdf",
+          "mimeType": "application/pdf",
+          "filePointer": "kxk3e2cwei",
+          "size": "101237",
+          "shouldIncludeFileContents": false
+         }
+        },
+        "size": "101237",
+        "mimeType": "application/pdf",
+        "filePointer": "kxk3e2cwei",
+        "mediaFileId": "kxk3e2cwei",
+        "captions": [],
+        "thumbnails": []
+       }
+      ]
+     },
+     "originalProtoCase": "mediaListValue",
+     "protoKey": {
+      "$type": "proto.sdui.Key",
+      "value": {
+       "$case": "id",
+       "id": "resume-picked-media"
+      }
+     }
+    }
+   ],
+   "requestedArguments": {
+    "$type": "proto.sdui.actions.requests.RequestedArguments",
+    "requestedStateKeys": [
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "resume-uploaded-asset-ids"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "easyApply.resumeSelectedKeyId"
+       }
+      }
+     },
+     {
+      "key": {
+       "value": {
+        "$case": "id",
+        "id": "resume-picked-media"
+       }
+      }
+     }
+    ],
+    "payload": {
+     "uploadedAssetIds": {
+      "key": "resume-uploaded-asset-ids",
+      "namespace": "MemoryNamespace"
+     },
+     "resumeSelectedKeyId": {
+      "key": "easyApply.resumeSelectedKeyId",
+      "namespace": "MemoryNamespace"
+     },
+     "mediaList": {
+      "key": "resume-picked-media",
+      "namespace": "MemoryNamespace"
+     },
+     "jobId": "4482617482"
+    },
+    "requestMetadata": {
+     "$type": "proto.sdui.common.RequestMetadata"
+    },
+    "states": [
+     {
+      "key": "resume-uploaded-asset-ids",
+      "namespace": "MemoryNamespace",
+      "value": [
+       "/AAFAKE100.pdf"
+      ],
+      "originalProtoCase": "stringListValue",
+      "protoKey": {
+       "$type": "proto.sdui.Key",
+       "value": {
+        "$case": "id",
+        "id": "resume-uploaded-asset-ids"
+       }
+      }
+     },
+     {
+      "key": "easyApply.resumeSelectedKeyId",
+      "namespace": "MemoryNamespace",
+      "value": "ea.q::32383411340::LARGER_RESUME::selectedResume",
+      "originalProtoCase": "stringValue",
+      "protoKey": {
+       "$type": "proto.sdui.Key",
+       "value": {
+        "$case": "id",
+        "id": "easyApply.resumeSelectedKeyId"
+       }
+      }
+     },
+     {
+      "key": "resume-picked-media",
+      "namespace": "MemoryNamespace",
+      "value": {
+       "$type": "proto.sdui.media.MediaList",
+       "mediaFiles": [
+        {
+         "mediaAttributions": [],
+         "analysisData": {},
+         "fileName": "cv.pdf",
+         "source": {
+          "$case": "localFile",
+          "localFile": {
+           "fileName": "cv.pdf",
+           "mimeType": "application/pdf",
+           "filePointer": "kxk3e2cwei",
+           "size": "101237",
+           "shouldIncludeFileContents": false
+          }
+         },
+         "size": "101237",
+         "mimeType": "application/pdf",
+         "filePointer": "kxk3e2cwei",
+         "mediaFileId": "kxk3e2cwei",
+         "captions": [],
+         "thumbnails": []
+        }
+       ]
+      },
+      "originalProtoCase": "mediaListValue",
+      "protoKey": {
+       "$type": "proto.sdui.Key",
+       "value": {
+        "$case": "id",
+        "id": "resume-picked-media"
+       }
+      }
+     }
+    ],
+    "screenId": "com.linkedin.sdui.flagshipnav.jobs.easyapply.EasyApply",
+    "knownTemplateIds": []
+   }
+  },
+  "resposta": "1:[]\n0:{\"states\":[],\"response\":{\"$type\":\"proto.sdui.responses.ServerRequestResponse\",\"errors\":[],\"isRetryable\":false,\"completionAction\":{\"actions\":[{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"ea.q::32383411340::LARGER_RESUME::selectedResume\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"/AAFAKE100.pdf\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"easyApply.resumeSelectedMediaId.4482617482\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"/AAFAKE100.pdf\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-uploaded-file-name\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"cv.pdf\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-uploaded-file-type-label\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"PDF\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"JobEasyApply_EasyApplyResumeIsSelected_0\"}}},\"value\":{\"$case\":\"stringValue\",\"stringValue\":\"Selected\"}}}},{\"$type\":\"proto.sdui.actions.core.SetState\",\"value\":{\"state\":{\"key\":{\"key\":{\"value\":{\"$case\":\"id\",\"id\":\"resume-upload-state\"}}},\"value\":{\"$case\":\"booleanValue\",\"booleanValue\":false}}}}],\"sduiTrackingProvenance\":{\"version\":\"0.2.2058\"}}},\"frontendContext\":{\"$type\":\"proto.frontendinfra.ResponseContext\",\"templates\":[],\"DebugTemplates\":[],\"sharedStrings\":[],\"syncedFlags\":[],\"sduiVersion\":\"0.2.2058\",\"encryptedServerIdentifier\":\"\",\"sharedTemplates\":\"$Q1\",\"requiredTemplateIds\":[]},\"treeId\":\"FAKE==\",\"sduiTrackingProvenance\":\"$0:response:completionAction:sduiTrackingProvenance\"}\n"
+ }
+}

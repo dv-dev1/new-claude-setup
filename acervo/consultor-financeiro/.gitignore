@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+
+# O estado mora em ~/.claude/consultor-financeiro/ e nunca entra aqui:
+# ledger.csv e perfil.md têm extrato bancário, nome de contraparte e conta.
+ledger.csv
+perfil.md
+categorias.csv
