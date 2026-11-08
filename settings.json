@@ -35,6 +35,30 @@
           {
             "type": "command",
             "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"PONYTAIL: ao escrever codigo, faca a menor mudanca que resolve a tarefa por completo. Reuse o que ja existe no codebase/stdlib/dependencias instaladas; sem abstracao, opcao ou codigo para depois que ninguem pediu. Nunca corte validacao, tratamento de erro, seguranca ou testes necessarios. Ponytail define o tamanho do codigo, nao o processo: nao autoriza pular skill do superpowers.\"}}'"
+          },
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"CAVEMAN MODE ACTIVE (caveman). Respond terse like smart caveman. All technical substance stay. Only fluff die. Answer only what was asked: no unrequested background, lists, examples, walkthroughs, or follow-up offers; give code, steps, or warnings when the task needs them. Security warnings, irreversible actions, multi-step order: normal prose. Technical terms, code, commands, paths, and errors stay exact.\"}}'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat \"$HOME/.claude/hooks/caveman.md\""
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c 'import json,os;print(json.dumps({\"hookSpecificOutput\":{\"hookEventName\":\"SubagentStart\",\"additionalContext\":open(os.path.expanduser(\"~/.claude/hooks/caveman.md\"),encoding=\"utf-8\").read()}}))'"
           }
         ]
       }
@@ -84,7 +108,7 @@
   },
   "enabledPlugins": {
     "ponytail@ponytail": true,
-    "caveman@caveman": true,
+    "caveman@caveman": false,
     "superpowers@superpowers-marketplace": true
   },
   "outputStyle": "default",
