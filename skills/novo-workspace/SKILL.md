@@ -28,7 +28,9 @@ projeto, essa pasta vira o `repo/` do workspace.
    - A pasta da sessão é o código do projeto quando tem os arquivos dele e o conteúdo bate com a
      conversa.
    - A pasta da sessão nunca é o código do projeto se for `~` ou ficar dentro de
-     `~/Documents/agent-memory/`, ou se for outro projeto. Nesses casos, use `--repo <url>` se a
+     `~/Documents/agent-memory/`, ou se for outro projeto.
+   - `~/workspace-standard` e `~/new-claude-setup` nunca são movidas, porque hooks e skills dependem
+     desses caminhos. Nesses casos, use `--repo <url>` se a
      conversa deu uma URL. Sem URL, não passe nada: o `repo/` nasce com `git init`.
    - Se a pasta tem `AGENTS.md` ou `CLAUDE.md` próprios, pare e pergunte. Separar o que é do
      workspace e o que é do código é trabalho à parte.
