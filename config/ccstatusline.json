@@ -3,88 +3,82 @@
   "lines": [
     [
       {
-        "id": "a",
-        "type": "custom-text",
-        "customText": "◆ ",
-        "color": "hex:cba6f7"
-      },
-      {
         "id": "1",
         "type": "model",
-        "color": "hex:cba6f7",
+        "color": "hex:ebdbb2",
         "bold": true,
         "rawValue": true
       },
       {
         "id": "s1",
         "type": "custom-text",
-        "customText": "  │  ",
-        "color": "hex:45475a"
+        "customText": "  \u2502  ",
+        "color": "hex:4a5068"
       },
       {
         "id": "9",
         "type": "context-bar",
-        "color": "hex:89b4fa",
+        "color": "hex:4fd6be",
         "rawValue": true
       },
       {
         "id": "s2",
         "type": "custom-text",
-        "customText": "  │  ",
-        "color": "hex:45475a"
+        "customText": "  \u2502  ",
+        "color": "hex:4a5068"
       },
       {
         "id": "b",
         "type": "custom-text",
         "customText": "5h ",
-        "color": "hex:7f849c"
+        "color": "hex:8b93a7"
       },
       {
         "id": "11",
         "type": "session-usage",
-        "color": "hex:fab387",
+        "color": "hex:ffd166",
         "rawValue": true
       },
       {
         "id": "c",
         "type": "custom-text",
-        "customText": "  ↻ ",
-        "color": "hex:6c7086"
+        "customText": "  \u21bb ",
+        "color": "hex:6b7394"
       },
       {
         "id": "12",
         "type": "reset-timer",
-        "color": "hex:a6adc8",
+        "color": "hex:e2e6f0",
         "rawValue": true
       },
       {
         "id": "s3",
         "type": "custom-text",
-        "customText": "  │  ",
-        "color": "hex:45475a"
+        "customText": "  \u2502  ",
+        "color": "hex:4a5068"
       },
       {
         "id": "d",
         "type": "custom-text",
         "customText": "7d ",
-        "color": "hex:7f849c"
+        "color": "hex:8b93a7"
       },
       {
         "id": "14",
         "type": "weekly-usage",
-        "color": "hex:f5c2e7",
+        "color": "hex:7ee0b5",
         "rawValue": true
       },
       {
         "id": "e",
         "type": "custom-text",
-        "customText": "  ↻ ",
-        "color": "hex:6c7086"
+        "customText": "  \u21bb ",
+        "color": "hex:6b7394"
       },
       {
         "id": "15",
         "type": "weekly-reset-timer",
-        "color": "hex:a6adc8",
+        "color": "hex:e2e6f0",
         "rawValue": true
       }
     ],
@@ -104,7 +98,7 @@
   "powerline": {
     "enabled": false,
     "separators": [
-      ""
+      "\ue0b0"
     ],
     "separatorInvertBackground": [
       false

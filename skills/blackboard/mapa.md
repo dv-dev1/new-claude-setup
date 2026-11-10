@@ -49,6 +49,9 @@ Mapeado em 22/10/2026 (Programação para Dispositivos Móveis).
   Rascunho salva sozinho; conferir recarregando a página.
 - Anexo do enunciado: `[data-bbfile]` tem `resourceUrl`; `fetch` falha (CORS). Abrir em aba nova do
   perfil `blackboard` e pegar a URL assinada final com `get url`.
+- Pergunta sem enunciado (medido em 05/11/2026, "1° Prática"): o enunciado fica no material da pasta da aula
+  (ex. `Exercício.pptx`). O pptx baixa pelo `originalUrl` do doc-viewer, igual ao PDF; texto com `unzip` dos
+  `ppt/slides/*.xml` e imagens em `ppt/media/` (o enunciado pode ser só um print da tela a reproduzir).
 - Enviar: há dois `button` "Enviar" (um oculto); clicar no visível (`offsetParent !== null`). Abre o
   diálogo "Enviar exercício?" com outro "Enviar". Recibo: overview mostra "Enviado em DD/MM/AA HH:MM".
 
@@ -80,3 +83,13 @@ Mapeada em 30/10/2026. A2 = AS no Blackboard (1,5) + ASG (3,5), aberta em 2 dias
 - Botão "N/40" abre o painel ("40 Respondidas"). Em seguida "Ir para o resumo" mostra tudo, com `.alternative-selector`
   marcada no mesmo azul. "Enviar respostas" abre um diálogo que pede a "Chave de envio" exibida nele, em 5 caixas
   de um dígito (clicar na 1ª e `type`). Recibo em `/avalia-online/finish`: "Avaliação finalizada... em <data>".
+
+## Itinerário Extensionista (DreamShaper)
+Mapeado em 10/11/2026. Itinerário Extensionista 2 = `_1196223_1` (achar pelo campo `#courses-overview-filter-search`
+em "Visualizar todos os cursos"; a lista esconde cursos com `.courseUnavailable`).
+- Regras no `Plano De Curso Itinerário - Unipê.pptx` (pasta "Funcionamento do itinerário"): só o professor cria o
+  projeto/grupo no DreamShaper, depois que cada aluno faz o 1º acesso. Líder manda lista (nome + RGM) pelo BB.
+- 1º acesso: pasta "Acessando o Projeto" > "Acesso à Ferramenta de Projeto" > botão "Abrir" visível
+  (abre aba nova `cds-ext-pres-cultdesenvsocial-unipe-262.dreamshaper.com/dashboard`; `tab-select 1`).
+- Sem grupo: dashboard mostra "Você ainda não tem projetos." Com grupo: card do projeto, 19 etapas, % de conclusão.
+- Mensagens: conversa abre clicando em `.message-info`; o texto da thread vem no `innerText` depois de "itens por página".
