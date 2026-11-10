@@ -88,6 +88,12 @@ só na conversa.
     21/10/2026.)
   - Criação de dashboards. (Confirmado em 21/10/2026; ferramenta não
     informada: não nomear.)
+  - Google Apps Script, Google AppSheet e Google Chat API: uso atual na Etros.
+    (Confirmado pelo candidato em 10/11/2026. Projetos, fluxos, volumes e
+    resultados NÃO informados: não inventar o que foi feito com cada um.)
+  - Playwright: uso na Etros, na Smartspace e na pós-graduação. (Confirmado pelo
+    candidato em 10/11/2026. Projetos, fluxos, volumes e resultados NÃO
+    informados: não inventar o que foi automatizado.)
   - Volumes, prazos e resultados NÃO informados: não inventar métrica. Itens
     do descritivo da vaga (BL/AWB, Deadline Engine, tracking, aprovação
     humana, retries) NÃO foram confirmados como feitos: não escrever.
@@ -256,6 +262,9 @@ só na conversa.
   - Construção de APIs REST em FastAPI para agentes de IA e integrações
     sistêmicas, consumidas por front-end e outros serviços.
   - Integrações com n8n, APIs REST e webhooks.
+  - Google Apps Script, Google AppSheet e Google Chat API: usados na
+    Inteligentte. (Confirmado pelo candidato em 10/11/2026. Detalhes, projetos
+    e resultados NÃO informados: não inventar.)
   - n8n self-hosted em VPS, principal uso de VPS na Inteligentte. (Confirmado
     pelo candidato em 23/09/2026; não escrever "serverless".)
 
@@ -320,7 +329,7 @@ só na conversa.
   Boot: em estudo; uso acadêmico (faculdade e pesquisas) e em alguns projetos
   autônomos (confirmado pelo candidato em 30/09/2026). Sem experiência
   profissional em produção: não escrever como experiência consolidada.
-- **Testes e Qualidade:** Pytest, Cypress (testes E2E), testes unitários,
+- **Testes e Qualidade:** Playwright (Smartspace, Etros e pós; confirmado 10/11/2026), Pytest, Cypress (testes E2E), testes unitários,
   testes end-to-end.
 - **DevOps e Infra:** Docker, Kubernetes (noções), Grafana (noções), Git, GitHub, GitHub Actions (CI/CD na Smartspace; confirmado 25/09/2026), Cloudflare Workers (projeto real confirmado 03/09/2026), deploy em VPS (projeto real confirmado 03/09/2026),
   (branching, pull requests, preview/production environments, CI/CD básico),

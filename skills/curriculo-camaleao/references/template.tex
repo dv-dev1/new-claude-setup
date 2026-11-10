@@ -1,6 +1,8 @@
 % Modelo base — Currículo Camaleão
 % Use o preâmbulo abaixo SEM alterar a estrutura. Substitua apenas o conteúdo
 % entre os marcadores de seção (%% =========================).
+% Única troca permitida no preâmbulo: [brazil] -> [english] no babel quando o
+% currículo for em inglês (traduza também os nomes das seções).
 % Regras de formatação por trás deste preâmbulo: ver regras-ats.md.
 
 \documentclass[10pt,a4paper]{article}
@@ -9,10 +11,20 @@
 \usepackage[T1]{fontenc}
 \usepackage[brazil]{babel}
 \usepackage{lmodern}
-\usepackage[margin=1.8cm]{geometry}
+\usepackage[margin=1.6cm]{geometry}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{hyperref}
+
+% Texto extraível: ligaduras (fi, fl) viram letras normais para o parser.
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+% Sem hifenização: "Lang-Chain" ou "Kuber-netes" quebrados no fim da linha
+% viram dois tokens e o ATS perde a keyword.
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\raggedright
 
 \hypersetup{
     colorlinks=true,
@@ -21,8 +33,8 @@
 
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.4em}
-\setlist[itemize]{leftmargin=1.3em, itemsep=0.2em}
+\setlength{\parskip}{0.3em}
+\setlist[itemize]{leftmargin=1.3em, itemsep=0.1em, topsep=0.2em}
 
 \titleformat{\section}
   {\large\bfseries}
@@ -31,36 +43,32 @@
   {}
   []
 
-\titlespacing*{\section}{0pt}{1em}{0.3em}
+\titlespacing*{\section}{0pt}{0.8em}{0.3em}
 
 \begin{document}
 
-\textbf{\Large [NOME COMPLETO]}
+\textbf{\Large <NOME COMPLETO>} \\
+<Título exato da vaga, sem nível>
 
-[Cidade] - [Estado], [País] \\
-Telefone: [+55 XX XXXXX-XXXX] \\
-Email: [email@email.com] \\
-LinkedIn: https://linkedin.com/in/[perfil] \\
-GitHub: https://github.com/[usuario]  % omita se não informado
+<Cidade>, <UF>, <País> | <+55 XX XXXXX-XXXX> | <email@email.com> \\
+https://linkedin.com/in/<perfil> | https://github.com/<usuario>
 
 % =========================
 \section*{Resumo Profissional}
 
-[3-4 linhas densas em keywords relevantes para a vaga]
+<2-3 linhas, até 60 palavras: título da vaga + obrigatórios da vaga + a
+métrica mais próxima da vaga>
 
 % =========================
 \section*{Experiência Profissional}
 
-\textbf{[Empresa]} \\
-Cargo: [Cargo adaptado à vaga] \\
-Período: [MM/AAAA -- MM/AAAA] \\
-Local: [Cidade, Estado]
+\textbf{<Cargo que candidato.md dá a esta experiência>} \hfill <MM/AAAA> -- <MM/AAAA ou Presente> \\
+<Empresa> | <Cidade, UF ou Remoto>
 
 \begin{itemize}
-\item [Bullet CAR com keyword da vaga e resultado quantificado]
-\item [Bullet CAR com keyword da vaga e resultado quantificado]
-\item [Bullet CAR com keyword da vaga e resultado quantificado]
-\item [Bullet CAR com keyword da vaga e resultado quantificado]
+\item <Bullet mais alinhado à vaga, com métrica quando existir na base>
+\item <Bullet CAR com keyword obrigatória da vaga em contexto real>
+\item <Bullet CAR com keyword obrigatória da vaga em contexto real>
 \end{itemize}
 
 % --- replicar para outras experiências ---
@@ -68,31 +76,25 @@ Local: [Cidade, Estado]
 % =========================
 \section*{Competências Técnicas}
 
-\textbf{Linguagens:} [...] \\
-\textbf{Backend:} [...] \\
-\textbf{Frontend:} [...] \\
-\textbf{Banco de Dados:} [...] \\
-\textbf{Ferramentas:} [...] \\
-\textbf{Metodologias:} [...]
+\textbf{<Categoria alinhada à vaga>:} <...> \\
+\textbf{<Categoria alinhada à vaga>:} <...> \\
+\textbf{<Categoria alinhada à vaga>:} <...>
 
 % =========================
 \section*{Formação Acadêmica}
 
-\textbf{[Instituição]} \\
-Curso: [Nome do Curso] \\
-Período: [MM/AAAA -- MM/AAAA] \\
-Status: [Em andamento / Concluído]
+\textbf{<Nome do Curso>} \hfill <MM/AAAA> -- <MM/AAAA> \\
+<Instituição> | <Em andamento / Concluído>
 
 % =========================
 \section*{Certificações}
 
-[Nome da Certificação (Instituição)] \\
-[Nome da Certificação (Instituição)]
+<Nome da Certificação (Instituição)> \\
+<Nome da Certificação (Instituição)>
 
 % =========================
 \section*{Idiomas}
 
-Português: Nativo \\
-Inglês: [Nível]  % omita se não informado
+Português: Nativo | Inglês: <Nível>
 
 \end{document}

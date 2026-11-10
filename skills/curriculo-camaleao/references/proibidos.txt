@@ -1,0 +1,27 @@
+# Termos que nunca podem aparecer no currículo. Fonte: travas de candidato.md.
+# Um termo por linha; o verificador casa sem diferenciar maiúsculas.
+# Quando candidato.md ganhar um novo "nunca escrever X", acrescente X aqui.
+
+# Cliente hospitalar sob NDA
+Real Hospital Português
+RHP
+# Métrica do hospital é volume de marcações, nunca acurácia
+acurácia
+accuracy
+# Serviços AWS sem uso comprovado ou removidos pelo candidato
+AWS API Gateway
+ECS
+Lambda
+RDS
+DynamoDB
+CloudFormation
+Terraform
+# Mensageria removida em 23/10/2026
+RabbitMQ
+Kafka
+# Hospital: trabalhou em time, não migrou sozinho
+migrei
+conduzi a migração
+# Estimativas do Banco do Nordeste ainda não confirmadas
+20 mil usuários
+200 consultas
