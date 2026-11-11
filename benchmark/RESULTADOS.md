@@ -56,4 +56,4 @@ Juiz cego, lê o pacote inteiro, nota 0, 1 ou 2 por critério, justificativa de 
 - arquivos editados preservados no resumo: 79/83 (95%)
 - SHAs citados preservados no resumo: 41/52 (79%)
 
-A partir de 11/11 a compactação passa para 350k com o `compactar.txt` reforçado. Daqui a ~1 semana, rodar `--desde <data do deploy>`; se arquivos ou SHAs ficarem abaixo da base, `autoCompactWindow` volta para 550000.
+A partir de 11/11 a compactação passa para 350k com o `compactar.txt` reforçado. Daqui a ~1 semana, rodar `--desde <data e hora UTC posteriores ao reinício das sessões abertas>` (o timestamp do transcript é UTC; as sessões abertas antes do deploy seguem em 550k até `/clear` ou reinício); se arquivos ou SHAs ficarem abaixo da base, `autoCompactWindow` volta para 550000.

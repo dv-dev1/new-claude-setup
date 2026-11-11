@@ -39,4 +39,4 @@ python3 -I real/grade.py
 
 Os resultados de 04/11/2026 estão em [RESULTADOS.md](RESULTADOS.md).
 
-Cobertura da compactação (só lê transcripts, sem custo): `python3 benchmark/compactacao/cobertura.py --desde AAAA-MM-DD`. Base em `RESULTADOS.md` (11/11/2026).
+Cobertura da compactação (só lê transcripts, sem custo): `python3 benchmark/compactacao/cobertura.py --desde AAAA-MM-DDTHH:MM` (UTC, como o timestamp do transcript). Base em `RESULTADOS.md` (11/11/2026).

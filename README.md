@@ -10,7 +10,8 @@ Setup do Claude Code recomeçado do zero em 02/11/2026: só o que é usado de fa
 | `hooks/varredura.py` | `Stop`: turno que rodou systematic-debugging e editou arquivo volta uma vez para varrer o repo inteiro, da raiz, atrás de outras ocorrências do bug. Conta também debug e edição feitos por subagente e a correção que vem no turno seguinte ao debug ("pode corrigir") |
 | `hooks/compactar.txt` | `PreCompact` (manual, auto e idle): prompt de compactação do colega com acréscimos: fala do usuário, último pedido, verificação, estado externo, nada de segredo, dados já entregues, últimas 3 falas, fontes de verdade no disco, trabalho em andamento, herança do resumo anterior e checagem final (o Claude Code aceita até 10.000 caracteres por hook) |
 | `tests/test_varredura.py` | testes do hook de varredura e do tamanho do texto de compactação: `python3 tests/test_varredura.py` |
-| `tests/test_setup.py` | testes dos hooks do caveman (rodam o comando real do `settings.json`) e do índice do acervo: `python3 tests/test_setup.py` |
+| `tests/test_setup.py` | testes dos hooks do caveman e dos lembretes (rodam o comando real do `settings.json`), dos valores do corte de overhead e do índice do acervo: `python3 tests/test_setup.py` |
+| `tests/test_cobertura.py` | testes do medidor de cobertura da compactação (`benchmark/compactacao/cobertura.py`): `python3 tests/test_cobertura.py` |
 | `hooks/sem-assinatura.py` | barra commit/PR com assinatura do Claude |
 | `skills/blackboard` | atividades da faculdade no Blackboard |
 | `skills/curriculo-camaleao` | currículo adaptado por vaga |
