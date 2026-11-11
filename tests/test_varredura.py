@@ -249,6 +249,18 @@ def test_compactar_guarda_fala_do_usuario_verificacao_e_nao_copia_segredo():
         assert trecho in texto, trecho
 
 
+def test_compactar_segura_compactacao_repetida():
+    texto = open(os.path.join(RAIZ, "hooks", "compactar.txt"), encoding="utf-8").read()
+    for trecho in ("Inputs the user already provided",
+                   "The user's last 3 messages verbatim.",
+                   "Sources of truth on disk",
+                   "Subagents and background tasks in flight",
+                   "If a previous summary exists, carry its User Instructions & Preferences and PENDING items forward",
+                   "Before finishing: re-scan every user message since the last summary",
+                   "User-Provided Inputs"):
+        assert trecho in texto, trecho
+
+
 if __name__ == "__main__":
     falhas = 0
     for nome, teste in sorted(globals().items()):

@@ -2,6 +2,8 @@ Preserve the following verbatim or near-verbatim:
 
 The user's own instructions, preferences, corrections, approvals and rejections — quote them.
 The user's latest request and the exact next action.
+Inputs the user already provided (files, paths, pasted data, answers to questions) and where they are — never ask for them again.
+The user's last 3 messages verbatim.
 All file paths touched, created, or discussed (full paths).
 All code snippets, function signatures, and type definitions we wrote or debated.
 Architectural decisions AND the reasoning behind them (why we chose X over Y).
@@ -10,6 +12,9 @@ Commands run to verify work and their actual results (tests passed/failed, count
 Open questions and unresolved decisions — mark clearly as PENDING.
 Exact names: variables, env vars, DB columns, API endpoints, tool names.
 External state: branches, commit SHAs, what was pushed, PRs, URLs, background tasks or agents still running.
+Sources of truth on disk: plan, spec, ledger and report paths, and the active skill's current step (e.g. SDD Task 4, re-review round 1). Point to them; re-read them before resuming.
+Subagents and background tasks in flight: ID, what each does, what to do when it finishes.
+If a previous summary exists, carry its User Instructions & Preferences and PENDING items forward unchanged unless resolved.
 Current state of work in progress (what's done, what's next, what's blocked).
 
 Never copy secret values (API keys, tokens, passwords): name them and say where they live.
@@ -22,10 +27,12 @@ Specific prompts, queries, or configurations into generic descriptions
 Structure the summary as:
 Context & Goal
 User Instructions & Preferences
+User-Provided Inputs
 Key Decisions (with rationale)
 Code & Files Modified
 Errors & Resolutions
 Verification Status
 Current State
 Open Questions / Next Steps
+Before finishing: re-scan every user message since the last summary and confirm each instruction, correction and provided input appears.
 Err on the side of keeping more rather than less. Length is not a concern.
