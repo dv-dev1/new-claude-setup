@@ -108,6 +108,25 @@ def test_acervo_sem_caminho_de_skill_ativa():
     assert not velhos, velhos
 
 
+def test_settings_corte_de_overhead():
+    with open(os.path.join(RAIZ, "settings.json"), encoding="utf-8") as fh:
+        s = json.load(fh)
+    assert s["autoCompactWindow"] == 350000
+    assert s["modelSettings"] == {"claude-opus-5-5": {"effortLevel": "high"},
+                                  "claude-sonnet-5-5": {"effortLevel": "high"},
+                                  "claude-fable-5-2": {"effortLevel": "medium"}}
+    escondidas = ["code-review", "simplify", "loop", "schedule", "init", "security-review",
+                  "fewer-permission-prompts", "keybindings-help", "plugin-authoring", "run",
+                  "anthropic-skills:skill-creator", "anthropic-skills:docs", "anthropic-skills:docx",
+                  "anthropic-skills:pptx"]
+    assert all(s["skillOverrides"][n] == "user-invocable-only" for n in escondidas)
+    assert s["skillOverrides"]["anthropic-skills:morning"] == "off"
+    assert set(s["permissions"]["deny"]) == {"mcp__claude_ai_Gmail", "mcp__claude_ai_Google_Calendar",
+                                             "mcp__claude_ai_Claude_Docs"}
+    with open(os.path.join(RAIZ, "CLAUDE.global.md"), encoding="utf-8") as fh:
+        assert "- Re-review" in fh.read()
+
+
 if __name__ == "__main__":
     falhas = 0
     for nome, teste in sorted(globals().items()):

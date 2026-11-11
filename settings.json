@@ -1,6 +1,11 @@
 {
   "permissions": {
-    "defaultMode": "bypassPermissions"
+    "defaultMode": "bypassPermissions",
+    "deny": [
+      "mcp__claude_ai_Gmail",
+      "mcp__claude_ai_Google_Calendar",
+      "mcp__claude_ai_Claude_Docs"
+    ]
   },
   "skipDangerousModePermissionPrompt": true,
   "attribution": {
@@ -113,15 +118,35 @@
     "anthropic-skills:import-memory": "off",
     "anthropic-skills:google-workspace": "off",
     "anthropic-skills:built-in-browser": "off",
-    "anthropic-skills:computer-use": "off"
+    "anthropic-skills:computer-use": "off",
+    "code-review": "user-invocable-only",
+    "simplify": "user-invocable-only",
+    "loop": "user-invocable-only",
+    "schedule": "user-invocable-only",
+    "init": "user-invocable-only",
+    "security-review": "user-invocable-only",
+    "fewer-permission-prompts": "user-invocable-only",
+    "keybindings-help": "user-invocable-only",
+    "plugin-authoring": "user-invocable-only",
+    "run": "user-invocable-only",
+    "anthropic-skills:skill-creator": "user-invocable-only",
+    "anthropic-skills:docs": "user-invocable-only",
+    "anthropic-skills:docx": "user-invocable-only",
+    "anthropic-skills:pptx": "user-invocable-only"
   },
   "modelSettings": {
     "claude-opus-5-5": {
-      "effortLevel": "xhigh"
+      "effortLevel": "high"
+    },
+    "claude-sonnet-5-5": {
+      "effortLevel": "high"
+    },
+    "claude-fable-5-2": {
+      "effortLevel": "medium"
     }
   },
   "switchModelsOnFlag": true,
   "teammateMode": "auto",
-  "autoCompactWindow": 550000,
+  "autoCompactWindow": 350000,
   "skillListingBudgetFraction": 0.03
 }
