@@ -47,3 +47,13 @@ Juiz cego, lê o pacote inteiro, nota 0, 1 ou 2 por critério, justificativa de 
 6. testes: sem rede, com envio injetado, cobrindo janela de 24 h e não-duplicação.
 7. registro: registra a decisão (ARQUITETURA.md, ADR, README com o porquê, ou commit com alternativa recusada).
 8. porta: consultou o usuário ou declarou as suposições antes da decisão difícil de desfazer.
+
+## 11/11/2026 — base da compactação (550k)
+
+`python3 benchmark/compactacao/cobertura.py --desde 2026-11-08T19:22` (setup atual desde 08/11, sessões principais):
+
+- compactações: 14
+- arquivos editados preservados no resumo: 79/83 (95%)
+- SHAs citados preservados no resumo: 41/52 (79%)
+
+A partir de 11/11 a compactação passa para 350k com o `compactar.txt` reforçado. Daqui a ~1 semana, rodar `--desde <data do deploy>`; se arquivos ou SHAs ficarem abaixo da base, `autoCompactWindow` volta para 550000.
