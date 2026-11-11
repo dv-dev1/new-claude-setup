@@ -23,12 +23,13 @@ def comandos(evento):
     return [h["command"] for grupo in hooks.get(evento, []) for h in grupo.get("hooks", [])]
 
 
-def saidas(evento):
-    """Saída de cada hook do evento, num HOME de mentira onde o install.sh já ligou o caveman.md."""
+def saidas(evento, entrada=""):
+    """Saída de cada hook do evento, num HOME de mentira onde o install.sh já ligou os hooks."""
     with tempfile.TemporaryDirectory() as home:
         os.makedirs(os.path.join(home, ".claude", "hooks"))
         shutil.copy(CAVEMAN, os.path.join(home, ".claude", "hooks", "caveman.md"))
-        return [subprocess.run(["sh", "-c", c], env={**os.environ, "HOME": home}, capture_output=True,
+        shutil.copy(os.path.join(RAIZ, "hooks", "lembretes.py"), os.path.join(home, ".claude", "hooks", "lembretes.py"))
+        return [subprocess.run(["sh", "-c", c], env={**os.environ, "HOME": home}, input=entrada, capture_output=True,
                                text=True, check=True).stdout for c in comandos(evento)]
 
 
@@ -46,8 +47,30 @@ def test_subagentstart_emite_json_do_caveman():
     assert esperado in [json.loads(s)["hookSpecificOutput"] for s in saidas("SubagentStart")]
 
 
+def lembretes(prompt=None, cru=None):
+    entrada = cru if cru is not None else json.dumps({"hook_event_name": "UserPromptSubmit", "prompt": prompt})
+    return [json.loads(s)["hookSpecificOutput"]["additionalContext"] for s in saidas("UserPromptSubmit", entrada) if s.strip()]
+
+
 def test_lembrete_caveman_por_mensagem():
-    assert LEMBRETE in [json.loads(s)["hookSpecificOutput"]["additionalContext"] for s in saidas("UserPromptSubmit")]
+    textos = lembretes("corrige o bug")
+    assert len(textos) == 1 and LEMBRETE in textos[0]
+    assert "SUPERPOWERS: as unicas skills" in textos[0] and "PONYTAIL: ao escrever codigo" in textos[0]
+
+
+def test_lembrete_calado_em_aviso_de_tarefa():
+    assert lembretes("<task-notification>\n<task-id>a1</task-id>") == []
+    assert lembretes("  \n<task-notification><task-id>a1</task-id>") == []
+    assert lembretes("<local-command-stdout>ok</local-command-stdout>") == []
+
+
+def test_lembrete_sai_em_fala_que_so_cita_o_aviso():
+    assert len(lembretes("o que é <task-notification>?")) == 1
+
+
+def test_lembrete_falha_aberto():
+    assert len(lembretes(cru="nao e json")) == 1
+    assert len(lembretes(cru="{}")) == 1
 
 
 ACERVO = os.path.join(RAIZ, "acervo")
